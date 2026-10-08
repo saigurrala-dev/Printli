@@ -1,0 +1,1988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Printli — System Architecture & Engineering Documentation</title>
+  <meta name="description" content="Complete 53-diagram architecture and workflow specification for the Printli Digital Print Shop Platform.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <!-- Mermaid JS -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
+  <!-- Panzoom for diagram zooming -->
+  <script src="https://cdn.jsdelivr.net/npm/@panzoom/panzoom@4.5.1/dist/panzoom.min.js"></script>
+</head>
+<body>
+  <!-- Header / Navigation -->
+  <header class="site-header">
+    <div class="header-container">
+      <div class="logo-group">
+        <div class="logo-icon">🖨️</div>
+        <div>
+          <span class="logo-title">Printli</span>
+          <span class="logo-badge">Architecture Specs</span>
+        </div>
+      </div>
+
+      <div class="search-wrapper">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" id="diagram-search" placeholder="Search 53 diagrams, concepts, APIs..." autocomplete="off">
+        <span class="search-count" id="search-count">53 diagrams</span>
+      </div>
+
+      <div class="header-actions">
+        <nav class="nav-links">
+          <a href="#master" class="nav-link active">Master Map</a>
+          <a href="#batch-core" class="nav-link">Core (1-12)</a>
+          <a href="#batch-2-4" class="nav-link">System (13-30)</a>
+          <a href="#batch-5" class="nav-link">Deep Dives (31-38)</a>
+          <a href="#batch-final" class="nav-link">Infra (39-53)</a>
+        </nav>
+        <button id="theme-toggle" class="icon-btn" title="Toggle Theme" aria-label="Toggle Theme">
+          <span class="theme-icon">🌙</span>
+        </button>
+        <a href="https://github.com/saigurrala-dev/Printli" target="_blank" rel="noopener" class="github-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          <span>GitHub</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Filter / Tag bar -->
+  <div class="filter-bar">
+    <div class="filter-container">
+      <span class="filter-label">Filter:</span>
+      <button class="filter-pill active" data-filter="all">All Diagrams (53)</button>
+      <button class="filter-pill" data-filter="core">Core Flow (1-12)</button>
+      <button class="filter-pill" data-filter="arch">Architecture & Cloud (15-18, 35-37)</button>
+      <button class="filter-pill" data-filter="print">Print Station & Hardware (6, 19-22, 33, 46, 53)</button>
+      <button class="filter-pill" data-filter="payment">Payment & Verification (4, 12, 25, 31, 34)</button>
+      <button class="filter-pill" data-filter="future">Future & Roadmap (29, 30, 51, 52)</button>
+    </div>
+  </div>
+
+  <div class="layout-wrapper">
+    <!-- Sidebar / TOC -->
+    <aside class="toc-sidebar">
+      <div class="toc-header">
+        <h3>Contents</h3>
+        <span class="toc-subtitle">Quick Navigation</span>
+      </div>
+      <nav class="toc-nav">
+        <div class="toc-group">
+          <a href="#master" class="toc-group-title">🌟 Master Architecture</a>
+          <ul class="toc-list">
+            <li><a href="#master-platform">Platform Overview</a></li>
+            <li><a href="#roles-guide">Role-based Reading Guide</a></li>
+          </ul>
+        </div>
+
+        <div class="toc-group">
+          <a href="#batch-core" class="toc-group-title">📌 Batch 1: Core (1-12)</a>
+          <ul class="toc-list">
+            <li><a href="#d-1">1. Product Ecosystem</a></li>
+            <li><a href="#d-2">2. Customer Journey</a></li>
+            <li><a href="#d-3">3. Order Lifecycle</a></li>
+            <li><a href="#d-4">4. Payment & Webhooks</a></li>
+            <li><a href="#d-5">5. Approval Flow</a></li>
+            <li><a href="#d-6">6. Print Station Cloud/Local</a></li>
+            <li><a href="#d-7">7. Device Pairing</a></li>
+            <li><a href="#d-8">8. Printer States</a></li>
+            <li><a href="#d-9">9. Smart Routing</a></li>
+            <li><a href="#d-10">10. ETA Engine</a></li>
+            <li><a href="#d-11">11. Priority Service</a></li>
+            <li><a href="#d-12">12. Physical Verification</a></li>
+          </ul>
+        </div>
+
+        <div class="toc-group">
+          <a href="#batch-2-4" class="toc-group-title">👥 Batches 2-4 (13-30)</a>
+          <ul class="toc-list">
+            <li><a href="#d-13">13. Stakeholder Map</a></li>
+            <li><a href="#d-14">14. Merchant & Staff</a></li>
+            <li><a href="#d-15">15. Backend Architecture</a></li>
+            <li><a href="#d-16">16. Frontend Apps</a></li>
+            <li><a href="#d-17">17. Multi-Tenancy</a></li>
+            <li><a href="#d-18">18. Auth & RBAC</a></li>
+            <li><a href="#d-19">19. Print Queue Comm</a></li>
+            <li><a href="#d-20">20. Station Heartbeat</a></li>
+            <li><a href="#d-21">21. Printer Capabilities</a></li>
+            <li><a href="#d-22">22. Job Separation</a></li>
+            <li><a href="#d-23">23. Real-Time Events</a></li>
+            <li><a href="#d-24">24. Document Security</a></li>
+            <li><a href="#d-25">25. Audit & Pickup</a></li>
+            <li><a href="#d-26">26. Monetization</a></li>
+            <li><a href="#d-27">27. Analytics Engine</a></li>
+            <li><a href="#d-28">28. Golden Admin</a></li>
+            <li><a href="#d-29">29. Multi-Service (Future)</a></li>
+            <li><a href="#d-30">30. Marketplace (Future)</a></li>
+          </ul>
+        </div>
+
+        <div class="toc-group">
+          <a href="#batch-5" class="toc-group-title">⚙️ Batch 5: Deep Dives (31-38)</a>
+          <ul class="toc-list">
+            <li><a href="#d-31">31. Payment Reconciliation</a></li>
+            <li><a href="#d-32">32. Routing Decision Tree</a></li>
+            <li><a href="#d-33">33. Station to Spooler</a></li>
+            <li><a href="#d-34">34. Partial Print Recovery</a></li>
+            <li><a href="#d-35">35. Customer App Arch</a></li>
+            <li><a href="#d-36">36. Merchant App Arch</a></li>
+            <li><a href="#d-37">37. Golden Admin Arch</a></li>
+            <li><a href="#d-38">38. Observability</a></li>
+          </ul>
+        </div>
+
+        <div class="toc-group">
+          <a href="#batch-final" class="toc-group-title">🚀 Final Batch: Infra (39-53)</a>
+          <ul class="toc-list">
+            <li><a href="#d-39">39. System Context</a></li>
+            <li><a href="#d-40">40. End-to-End Process</a></li>
+            <li><a href="#d-41">41. Order Creation Flow</a></li>
+            <li><a href="#d-42">42. Upload & Storage</a></li>
+            <li><a href="#d-43">43. Pickup Lifecycle</a></li>
+            <li><a href="#d-44">44. Customer Status Flow</a></li>
+            <li><a href="#d-45">45. Push & WebSockets</a></li>
+            <li><a href="#d-46">46. Printer Spooler Detail</a></li>
+            <li><a href="#d-47">47. Resource Lifecycle</a></li>
+            <li><a href="#d-48">48. Doc Access Control</a></li>
+            <li><a href="#d-49">49. Staff Permissions</a></li>
+            <li><a href="#d-50">50. Priority Edge Cases</a></li>
+            <li><a href="#d-51">51. Resource Orchestration</a></li>
+            <li><a href="#d-52">52. External Partner APIs</a></li>
+            <li><a href="#d-53">53. File Delivery & Prefetch</a></li>
+          </ul>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+
+      <!-- Master Hero Banner -->
+      <section id="master" class="hero-section">
+        <div class="hero-badge">Architecture & Specification Portal</div>
+        <h1 class="hero-title">Printli Platform Architecture</h1>
+        <p class="hero-lead">
+          <strong>Central Thesis:</strong> The platform is an intelligent bridge connecting digital customer orders and physical print/document operations.
+        </p>
+        
+        <div class="callout-box">
+          <div class="callout-icon">💡</div>
+          <div class="callout-body">
+            <strong>Architecture Philosophy:</strong> The Cloud decides <em>WHAT</em> to print, how to route, price, calculate dynamic ETA, and audit. The local shop <strong>Print Station</strong> decides <em>HOW</em> to feed jobs silently to OS print queues with zero network lag via aggressive prefetching.
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: Master Architecture Diagram -->
+      <section id="master-platform" class="diagram-card" data-tags="core arch">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-tag badge-master">Master Architecture</span>
+            <h2>The Entire Platform on One Page</h2>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn" title="View Fullscreen & Zoom">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn" title="Copy Mermaid Definition">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why">
+          <strong>Read left to right:</strong> Customer & Merchant interfaces → Cloud brain (Auth, Routing, Orders, Payments) → Local Shop Print Station → Physical Printers & Output Verification → Verified Handover.
+        </p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+flowchart LR
+subgraph PEOPLE["People"]
+ CU["Customer: Web or QR, Mobile"]
+ MR["Merchant owner and staff"]
+ AD["Golden Admin"]
+end
+subgraph CLOUD["Cloud: decides WHAT"]
+ API["API, auth, tenancy"]
+ ORD["Orders and approvals"]
+ PAY["Payments and reconciliation"]
+ RT["Routing, ETA, Priority"]
+ NT["Notifications and WebSocket"]
+ DATA[("PostgreSQL, Redis queue, Object storage")]
+end
+subgraph LOCAL["Shop local: decides HOW"]
+ AGT["Web Print Station (browser on shop PC)"]
+ SPL["OS print queue (Windows spooler)"]
+ PRT["Printers"]
+end
+subgraph PHYS["Physical reality"]
+ PAP["Printed pages"]
+ VER["Physical verification by staff"]
+ PU["OTP or QR pickup"]
+end
+CU --> API
+MR --> API
+AD --> API
+API --> ORD --> PAY
+ORD --> RT
+RT --> DATA
+DATA -->|"print queue"| AGT
+AGT --> SPL --> PRT --> PAP --> VER
+AGT -.->|"heartbeat and status"| API
+VER --> MR
+VER --> NT
+NT --> CU
+CU --> PU
+PU --> MR
+FUT["FUTURE: marketplace, API partners, delivery, multi-service"] -.-> API
+          </pre>
+        </div>
+      </section>
+
+      <!-- Roles Guide -->
+      <section id="roles-guide" class="role-grid-section">
+        <h3 class="section-heading">Recommended Reading Paths</h3>
+        <div class="role-grid">
+          <div class="role-card">
+            <div class="role-icon">💻</div>
+            <h4>New Engineers & Developers</h4>
+            <p>Start with the Master Diagram, then master the foundational lifecycles and station pairing:</p>
+            <div class="role-links">
+              <a href="#d-3">3. Order Lifecycle</a>
+              <a href="#d-6">6. Print Station</a>
+              <a href="#d-12">12. Verification</a>
+              <a href="#d-15">15. Backend Arch</a>
+              <a href="#d-53">53. File Prefetch</a>
+            </div>
+          </div>
+          <div class="role-card">
+            <div class="role-icon">📊</div>
+            <h4>Product Managers & Founders</h4>
+            <p>Understand user journey, business models, priority pricing, and end-to-end processing:</p>
+            <div class="role-links">
+              <a href="#d-2">2. Customer Journey</a>
+              <a href="#d-11">11. Priority Pricing</a>
+              <a href="#d-26">26. Monetization</a>
+              <a href="#d-40">40. End-to-End Flow</a>
+            </div>
+          </div>
+          <div class="role-card">
+            <div class="role-icon">🛡️</div>
+            <h4>QA, SRE & Operations</h4>
+            <p>Focus on partial failure recovery, reconciliation, physical sorting, and job separation:</p>
+            <div class="role-links">
+              <a href="#d-12">12. Failure Recovery</a>
+              <a href="#d-22">22. Job Separation</a>
+              <a href="#d-31">31. Reconciliation</a>
+              <a href="#d-34">34. Partial Print</a>
+              <a href="#d-38">38. Observability</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           BATCH 1: CORE DIAGRAMS (1-12)
+           ========================================== -->
+      <section id="batch-core" class="batch-divider">
+        <div class="batch-badge">Batch 1</div>
+        <h2>Core Platform Workflows & Lifecycles (Diagrams 1 to 12)</h2>
+        <p class="batch-desc">Foundational customer entrypoints, order state machines, smart routing, payment webhooks, and local print station mechanics.</p>
+      </section>
+
+      <!-- Diagram 1 -->
+      <article id="d-1" class="diagram-card" data-tags="core arch">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">01</span>
+            <h3>Product Ecosystem</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> Maps who touches the platform and how they connect. Customers never connect directly to shop printers; all interactions flow through the cloud gateway and local station.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+flowchart LR
+subgraph CUST["Customer"]
+ C1["Customer Web via Shop QR"]
+ C2["Customer Mobile"]
+end
+subgraph MERCH["Merchant"]
+ M1["Merchant Web / Mobile"]
+ M2["Owner and Staff"]
+end
+subgraph CLOUD["Platform Cloud"]
+ API["Platform API"]
+ BL["Orders, Payments, Routing, ETA, Notifications"]
+ DB[("PostgreSQL")]
+ Q[("Redis / BullMQ")]
+ S[("Object Storage")]
+end
+subgraph ADMIN["Platform Admin"]
+ GA["Golden Admin"]
+end
+subgraph LOCAL["Shop Local Infrastructure"]
+ PA["Web Print Station (browser on shop PC)"]
+ SP["OS print queue (Windows spooler)"]
+ PR["Printers"]
+end
+C1 --> API
+C2 --> API
+M1 --> API
+M2 --> M1
+GA --> API
+API --> BL
+BL --> DB
+BL --> Q
+BL --> S
+Q --> PA
+PA --> SP --> PR
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 2 -->
+      <article id="d-2" class="diagram-card" data-tags="core">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">02</span>
+            <h3>Customer Journey: Walk-in & Remote</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> Both walk-in (QR scan) and remote orders feed into a single unified processing pipeline. Customers only return to the counter once the order is verified and ready.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+flowchart TD
+W["Walk-in: scan Shop QR"] --> U["Upload and label document"]
+R["Remote: open platform, pick shop"] --> U
+U --> CF["Configure options the shop supports"]
+CF --> PV["Smart preview: price and ETA range"]
+PV --> PAY["Pay"]
+PAY --> TR["Track progress"]
+TR --> RDY["Ready notification"]
+RDY --> OTP["Show OTP or QR at shop"]
+OTP --> COL["Collected"]
+R -.->|"FUTURE"| ATS["I am at the shop button"]
+ATS -.-> OTP
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 3 -->
+      <article id="d-3" class="diagram-card" data-tags="core">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">03</span>
+            <h3>Order Lifecycle State Machine</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> Strict separation of Payment, Approval, Print Execution, and Physical Verification. Failures in printing always route to staff physical verification to count salvageable pages before re-queueing.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+stateDiagram-v2
+[*] --> CREATED
+CREATED --> UPLOADED
+UPLOADED --> CONFIGURED
+CONFIGURED --> PAYMENT_PENDING
+PAYMENT_PENDING --> PAID
+PAID --> AWAITING_APPROVAL: manual or rule-triggered
+PAID --> APPROVED: auto print
+AWAITING_APPROVAL --> APPROVED
+AWAITING_APPROVAL --> CANCELLED: rejected, refund
+APPROVED --> QUEUED
+QUEUED --> RESOURCE_ASSIGNED
+RESOURCE_ASSIGNED --> PRINTING
+PRINTING --> PRINT_COMPLETED
+PRINTING --> ERROR
+ERROR --> PHYSICAL_VERIFICATION
+PRINT_COMPLETED --> PHYSICAL_VERIFICATION
+PHYSICAL_VERIFICATION --> READY_FOR_PICKUP
+PHYSICAL_VERIFICATION --> QUEUED: retry or reassign
+PHYSICAL_VERIFICATION --> CANCELLED: cancel, refund
+READY_FOR_PICKUP --> COLLECTED
+COLLECTED --> [*]
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 4 -->
+      <article id="d-4" class="diagram-card" data-tags="core payment">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">04</span>
+            <h3>Payment Flow with Idempotent Webhooks</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> Payment gateways retry callbacks under latency. Using strict idempotency keys guarantees no double charging or duplicated print orders occur.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+sequenceDiagram
+participant Cu as Customer
+participant API as Platform API
+participant GW as Payment Gateway
+participant DB as PostgreSQL
+Cu->>API: Pay for order
+API->>DB: Create payment PENDING with idempotency key
+API->>GW: Create payment
+GW-->>Cu: UPI payment screen
+GW->>API: Webhook payment success
+API->>DB: Event already processed?
+alt Duplicate
+ API-->>GW: 200 OK, ignore
+else New
+ API->>DB: Mark PAID, move order to approval flow
+ API-->>GW: 200 OK
+end
+Note over API,DB: A reconciliation job compares gateway records with the DB and fixes paid-but-no-order cases
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 5 -->
+      <article id="d-5" class="diagram-card" data-tags="core">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">05</span>
+            <h3>Order Approval Flow</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> A paid order is not immediately sent to printers. Configurable rules (e.g. high value, color, bulk volume) trigger manual staff review to prevent wasted consumables.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+flowchart TD
+P["Order PAID"] --> M{"Shop approval mode"}
+M -->|"Auto Print"| RL{"Any rule triggered? color, many pages, high value, many copies"}
+M -->|"Manual"| WA["AWAITING_APPROVAL"]
+RL -->|"No"| AP["APPROVED"]
+RL -->|"Yes"| WA
+WA --> D{"Staff or owner decision"}
+D -->|"Approve"| AP
+D -->|"Reject"| RF["Cancel and refund"]
+AP --> QU["Print queue"]
+D -.-> AU[("Audit log: who decided")]
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 6 -->
+      <article id="d-6" class="diagram-card" data-tags="core print arch">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">06</span>
+            <h3>Print Station Architecture (Cloud vs Local)</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> Clean boundary: Cloud manages queues and signed URLs; the web app running on the shop PC prefetches the next 1-2 files to local cache and spools them silently to the default printer.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+flowchart LR
+subgraph CLOUD["CLOUD: what"]
+ O["Order and routing decision"] --> PQ[("Print Queue: small job messages")]
+ FS[("Object storage: print-ready PDF")]
+ ST["Status and health store"]
+end
+subgraph LOCAL["SHOP PC: how"]
+ AG["Print Station web page: prefetch, silent print, report status"]
+ LC[("Local cache: next 1 to 2 jobs")]
+ SPL["OS print queue (Windows spooler)"]
+ PRT["Physical Printer"]
+end
+PQ -->|"job message"| AG
+FS -->|"short-lived signed URL, prefetch"| LC
+AG --> LC
+LC --> SPL --> PRT
+PRT -.->|"limited local status"| SPL
+AG -->|"heartbeat, job status, errors it can see"| ST
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 7 -->
+      <article id="d-7" class="diagram-card" data-tags="core print">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">07</span>
+            <h3>Print Station Device Pairing</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> Safe one-time pairing code exchanged for a persistent, revocable device token stored securely in the browser's indexed profile.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+sequenceDiagram
+participant A as Shop Admin
+participant W as Merchant Web
+participant B as Backend
+participant G as Print Station (browser)
+A->>W: Add Print Station
+W->>B: Generate one-time pairing code
+B-->>W: Code with short expiry
+A->>G: Enter code on the Print Station page
+G->>B: Present code
+B->>B: Validate, mark code used
+B-->>G: Device credential, stored in this browser profile
+G->>B: Heartbeat and station status
+A->>W: Register the shop printer manually, a browser cannot list printers
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 8 -->
+      <article id="d-8" class="diagram-card" data-tags="core print">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">08</span>
+            <h3>Printer State Machine</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> System health (heartbeats) and merchant policies combine to determine if a printer is in the routable pool.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+stateDiagram-v2
+[*] --> OFFLINE
+OFFLINE --> AVAILABLE: Print Station online and printer enabled
+AVAILABLE --> RESERVED: job assigned
+RESERVED --> BUSY: printing starts
+BUSY --> AVAILABLE: done and verified
+BUSY --> ERROR: staff reports jam or no paper, or station error
+ERROR --> AVAILABLE: cleared
+AVAILABLE --> PAUSED: staff pause
+PAUSED --> AVAILABLE
+AVAILABLE --> MAINTENANCE: owner policy
+MAINTENANCE --> AVAILABLE
+AVAILABLE --> OFFLINE: heartbeat lost
+AVAILABLE --> DISABLED: owner disables
+DISABLED --> AVAILABLE
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 9 -->
+      <article id="d-9" class="diagram-card" data-tags="core">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">09</span>
+            <h3>Smart Routing Engine</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> Deterministic filtering pipeline matching job requirements (paper, color, duplex) against healthy, policy-enabled resources to produce an optimal assignment and ETA.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+flowchart TD
+J["Job requirements: color, size, duplex, pages"] --> F1["Capability filter"]
+F1 --> F2["Merchant rules and owner policy"]
+F2 --> F3["Health and availability"]
+F3 --> N{"Any candidate?"}
+N -->|"No"| H["Hold and alert merchant"]
+N -->|"Yes"| SC["Rank by queue length, speed, priority"]
+SC --> E["Compute ETA"]
+E --> BEST["Best resource assigned"]
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 10 -->
+      <article id="d-10" class="diagram-card" data-tags="core">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">10</span>
+            <h3>ETA Calculation and Dynamic Updates</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> ETA is a core free feature presented as a range (e.g. 7-10 min). Meaningful delays automatically notify customers via push/WebSocket.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+flowchart LR
+I1["Jobs, pages and copies ahead"] --> CALC
+I2["Printer speed and health"] --> CALC
+I3["Approval and verification delay"] --> CALC
+I4["Priority status"] --> CALC
+CALC["ETA engine"] --> RNG["Range, e.g. 7 to 10 min"]
+RNG --> UI["Customer sees ETA"]
+EV["Event: printer failure, reroute, queue change"] --> CALC
+CALC --> CH{"Change is meaningful?"}
+CH -->|"Yes"| NT["Notify customer with reason and new range"]
+CH -->|"No"| SIL["Update silently"]
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 11 -->
+      <article id="d-11" class="diagram-card" data-tags="core">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">11</span>
+            <h3>Priority Service and Mid-Flight Upgrades</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> Priority is only offered if it provides genuine acceleration. Mid-flight upgrades charge only the marginal fee difference.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+flowchart TD
+S["Standard ETA computed"] --> P["Priority ETA computed"]
+P --> G{"Meaningfully faster?"}
+G -->|"No"| NO["Do not offer Priority"]
+G -->|"Yes"| OF["Offer Priority fee"]
+OF --> ACC{"Customer accepts?"}
+ACC -->|"Yes"| PF["Pay base plus priority fee"]
+ACC -->|"No"| STD["Standard order"]
+STD --> LATER{"Queue worsens and Priority now helps?"}
+LATER -->|"Yes"| UP["Offer upgrade: pay only incremental fee"]
+LATER -->|"No"| KEEP["Continue as is"]
+PF --> SPLIT["Merchant share and platform share (TBD)"]
+UP --> SPLIT
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 12 -->
+      <article id="d-12" class="diagram-card" data-tags="core payment print">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">12</span>
+            <h3>Physical Verification & Printer Failure Handling</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> Digital completion ≠ Physical completion. Mid-job errors trigger manual staff verification to count actual tray output before re-spooling remaining pages.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+flowchart TD
+PR["PRINTING"] --> OK{"Print Station reports sent and OS queue clear?"}
+OK -->|"Yes"| SEP{"Separator or acknowledgement rule?"}
+SEP --> PV["PHYSICAL_VERIFICATION: staff check and sort pages"]
+OK -->|"Failure mid-job"| ER["ERROR: pause resource, alert staff"]
+ER --> PV
+PV --> R{"Staff outcome"}
+R -->|"All correct"| RD["READY_FOR_PICKUP, notify customer with OTP"]
+R -->|"Partial"| CH{"Choose action"}
+CH --> A1["Continue remaining pages"]
+CH --> A2["Restart"]
+CH --> A3["Reassign to another printer"]
+CH --> A4["Cancel and refund"]
+A1 --> Q["Back to queue, ETA recalculated"]
+A2 --> Q
+A3 --> Q
+          </pre>
+        </div>
+      </article>
+
+
+      <!-- ==========================================
+           BATCHES 2-4: STAKEHOLDERS, APPS, TENANCY (13-30)
+           ========================================== -->
+      <section id="batch-2-4" class="batch-divider">
+        <div class="batch-badge">Batches 2 to 4</div>
+        <h2>Stakeholders, Tenancy, Security & Monetization (Diagrams 13 to 30)</h2>
+        <p class="batch-desc">Multi-tenant isolation, RBAC matrix, device heartbeats, separator sheets, document security lifecycles, and subscription tiers.</p>
+      </section>
+
+      <!-- Diagram 13 -->
+      <article id="d-13" class="diagram-card" data-tags="arch">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">13</span>
+            <h3>Stakeholder Map</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> Defines incentives and priorities for Customers, Shop Owners, Floor Staff, Platform Admins, and Partner Institutions.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+flowchart LR
+CU["Customer: no waiting, clear ETA, safe pickup"] --- PL(("Platform"))
+OW["Merchant owner: revenue, control of printers"] --- PL
+ST["Staff: clear tasks, accountability"] --- PL
+AD["Golden Admin team: health, support, audit"] --- PL
+PL --- AG["Print Station and printers: physical output"]
+PL -.->|"FUTURE"| IN["Institutions and API partners"]
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 14 -->
+      <article id="d-14" class="diagram-card" data-tags="core">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">14</span>
+            <h3>Merchant & Staff Workflow</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> Day-to-day shop operational loop ensuring full accountability: approvals, sorting, and OTP pickup validation are audited to staff accounts.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+flowchart TD
+N["New paid order"] --> AP{"Needs approval?"}
+AP -->|"Yes"| A["Owner or approver reviews"]
+AP -->|"No"| Q
+A --> Q["Queue and auto-routing"]
+Q --> PR["Printer prints via Print Station"]
+PR --> PV["Staff physically verify and sort"]
+PV --> RD["Mark ready, customer notified"]
+RD --> PU["Staff verify OTP or QR and hand over"]
+A -.-> L[("Audit: approved by")]
+PV -.-> L
+PU -.-> L
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 15 -->
+      <article id="d-15" class="diagram-card" data-tags="arch">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">15</span>
+            <h3>High-Level Backend Architecture</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> Modular NestJS API leveraging Redis BullMQ queues, Postgres persistence, WebSocket gateways, and async background workers.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+flowchart TD
+subgraph CL["Clients"]
+ CW["Customer Web"] ; CM["Customer Mobile"] ; MW["Merchant Web"] ; MM["Merchant Mobile"] ; GA["Golden Admin"]
+end
+CL --> GW["API layer: auth, validation, tenancy"]
+GW --> MOD["Modules: orders, payments, documents, pricing, resources, routing, print-jobs, print-stations, pickup, notifications, subscriptions, analytics, audit"]
+MOD --> DB[("PostgreSQL")]
+MOD --> RQ[("Redis and BullMQ")]
+MOD --> OS[("Object storage")]
+MOD --> WS["WebSocket gateway"]
+RQ --> WK["Workers: ETA, notifications, reconciliation, cleanup"]
+MOD --> PQ["Print queue"] --> AGT["Print Stations (web)"]
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 16 -->
+      <article id="d-16" class="diagram-card" data-tags="arch">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">16</span>
+            <h3>Frontend Applications & Monorepo Structure</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> 3 audiences, 6 client apps, shared type validation packages, unified API contract.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+flowchart LR
+subgraph APPS["apps"]
+ A1["customer-web: QR landing, upload, pay, track"]
+ A2["customer-mobile: Expo"]
+ A3["merchant-web: queue, resources, staff, revenue"]
+ A4["merchant-mobile"]
+ A5["Golden Admin"]
+ A6["print-station: web app in its own browser window. Native agent is the fallback, TBD"]
+end
+subgraph PKG["shared packages"]
+ P1["types"] ; P2["validation"] ; P3["api-client"] ; P4["ui"]
+end
+APPS --> PKG --> API["Platform API"]
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 17 -->
+      <article id="d-17" class="diagram-card" data-tags="arch">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">17</span>
+            <h3>Multi-Tenancy Hierarchy</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> Clear separation between Merchant (legal entity) and Shop (physical store branches). Every database row is strictly tenant-scoped.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+flowchart TD
+P["Platform"] --> MA["Merchant A"]
+P --> MB["Merchant B"]
+MA --> S1["Shop A1"]
+MA --> S2["Shop A2"]
+MB --> S3["Shop B1"]
+S1 --> R1["Resources, Print Stations, staff, orders"]
+S2 --> R2["Resources, Print Stations, staff, orders"]
+S3 --> R3["Resources, Print Stations, staff, orders"]
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 18 -->
+      <article id="d-18" class="diagram-card" data-tags="arch">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">18</span>
+            <h3>Authentication & RBAC Matrix</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> Distinct identity flows for Customers, Shop Staff, Print Station Devices, and Golden Admins. Every permission check failure produces an immutable audit record.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+flowchart TD
+RQ["Request"] --> ID{"Identity type"}
+ID -->|"Customer"| T1["Session or OTP login"]
+ID -->|"Merchant or staff"| T2["Login plus StaffMembership for this shop"]
+ID -->|"Print Station"| T3["Device credential from pairing"]
+ID -->|"Platform admin"| T4["Admin login plus audited actions"]
+T1 --> TN["Tenant check: shop and merchant scope"]
+T2 --> TN
+T3 --> TN
+T4 --> TN
+TN --> RB{"Role has permission?"}
+RB -->|"Yes"| OK["Allow"]
+RB -->|"No"| DN["Deny and write audit log"]
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 19 -->
+      <article id="d-19" class="diagram-card" data-tags="print arch">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">19</span>
+            <h3>Cloud-to-Station Print Queue Protocol</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> Lightweight ACK protocol ensures unacknowledged or dropped jobs safely return to the cloud queue for re-assignment without re-uploading.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+sequenceDiagram
+participant C as Cloud Queue
+participant O as Object Storage
+participant A as Print Station
+participant S as OS Print Queue
+C->>A: Job message for resource X, no file yet
+A->>C: Ack received
+A->>O: Prefetch PDF via short-lived URL, verify checksum
+Note over A: Done while the earlier job still prints
+A->>S: Silent print to the PC default printer
+S-->>A: Submitted, limited detail
+A->>C: Status: sent to printer, staff confirm the result
+Note over C,S: No ack in time:<br/>job returns to queue<br/>for re-routing
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 20 -->
+      <article id="d-20" class="diagram-card" data-tags="print">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">20</span>
+            <h3>Print Station Heartbeat & WakeLock Monitoring</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> Detects if the browser tab goes to sleep or network drops; immediately removes associated hardware from the routing pool.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+flowchart LR
+AG["Print Station page every N seconds: station id, page visible, wake lock, last job"] --> API["Backend"]
+API --> LS[("Last seen and station status")]
+LS --> MON{"Heartbeat missed?"}
+MON -->|"No"| OKK["Resource stays routable"]
+MON -->|"Yes"| OFF["Mark OFFLINE, stop new jobs, reroute where safe"]
+OFF --> AL["Alert merchant and Golden Admin"]
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 21 -->
+      <article id="d-21" class="diagram-card" data-tags="print">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">21</span>
+            <h3>Printer Capability & Resource Data Model</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> Relational schema ensuring customer UI only presents options that the chosen shop's physical hardware actually supports.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+classDiagram
+class Shop
+class Resource{
+ type
+ system_state
+ owner_policy
+ speed_ppm
+}
+class ResourceCapability{
+ color
+ paper_sizes
+ duplex
+}
+class RoutingRule{
+ condition
+ target_resource
+}
+Shop "1" --> "many" Resource
+Resource "1" --> "1" ResourceCapability
+Shop "1" --> "many" RoutingRule
+RoutingRule --> Resource
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 22 -->
+      <article id="d-22" class="diagram-card" data-tags="print">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">22</span>
+            <h3>Job Separation: Eco Separator & Staff Ack</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> Prevents mixed customer papers in the output tray without altering customer PDFs.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+flowchart TD
+JA["Job A finishes"] --> RL{"Merchant rule"}
+RL -->|"Separator"| SEP["Print separator sheet with internal job id, then Job B"]
+RL -->|"Acknowledge"| HOLD["Hold Job B"] --> ACK["Staff sorts Job A, presses Acknowledge and Continue"] --> JB["Job B starts"]
+RL -->|"None"| JB
+SEP --> JB
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 23 -->
+      <article id="d-23" class="diagram-card" data-tags="arch">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">23</span>
+            <h3>Real-Time Notifications & WebSocket Gateway</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> Domain event bus dispatches real-time order progression to active browser WebSockets and fallback Push notifications.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+flowchart LR
+EV["Domain events: paid, printing, ETA changed, failure, ready, collected, refund"] --> NS["Notification service"]
+NS --> PF["Preferences and dedupe"]
+PF --> WSK["WebSocket: live status in app"]
+PF --> PU["Push"]
+PF --> SM["SMS and email, provider TBD"]
+WSK --> UI["Customer status screen"]
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 24 -->
+      <article id="d-24" class="diagram-card" data-tags="arch">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">24</span>
+            <h3>Document Security & Auto-Purge Lifecycle</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> Strict privacy lifecycle: customer documents are encrypted in object storage and automatically purged after collection/retention window.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+stateDiagram-v2
+[*] --> UPLOADED: validate type and size
+UPLOADED --> STORED: encrypted in object storage
+STORED --> IN_USE: short-lived access for approved job
+IN_USE --> STORED
+STORED --> EXPIRED: after retention period TBD
+EXPIRED --> DELETED: automatic purge
+STORED --> DELETED: customer deletes
+DELETED --> [*]
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 25 -->
+      <article id="d-25" class="diagram-card" data-tags="payment">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">25</span>
+            <h3>Audit Logging & Secure OTP Pickup</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> Prevents unauthorized collection; exceptions (e.g. lost phone/code) follow an audited alternate verification workflow.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+flowchart TD
+AC["Sensitive action: approve, refund, reroute, price change, pickup verify"] --> AUD[("Audit log: actor, role, shop, time, before and after")]
+RDY["Order READY"] --> OTP["Generate OTP or QR, send to customer"]
+OTP --> VF["Staff verify code"]
+VF -->|"Match"| HO["Hand over, COLLECTED"]
+VF -->|"Lost code"| ALT["Alternate verified process, audited"]
+HO --> AUD
+ALT --> AUD
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 26 -->
+      <article id="d-26" class="diagram-card" data-tags="payment">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">26</span>
+            <h3>Subscription, Monetization & Priority Fee Splits</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> Two revenue engines: SaaS merchant subscriptions and dynamic priority service fees without paywalling core features like standard ETA.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+flowchart LR
+MS["Merchant subscription: Starter, Growth, Pro, Enterprise"] --> PL(("Platform revenue"))
+PRI["Customer Priority fee"] --> SP{"Split TBD"}
+SP --> MSH["Merchant share"]
+SP --> PSH["Platform share"]
+PSH --> PL
+CUSTP["Customer pays base price"] --> MON["Merchant revenue, price set by merchant"]
+CV["Convenience fee: FUTURE"] -.-> PL
+API["API and institutional fees: FUTURE"] -.-> PL
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 27 -->
+      <article id="d-27" class="diagram-card" data-tags="arch">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">27</span>
+            <h3>Analytics, Financial Aggregation & Staff Activity</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> Multi-dimensional metrics separating shop revenue, printer hardware utilization, and staff operational activity.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+flowchart TD
+EVT[("Orders, payments, jobs, audit events")] --> AGG["Aggregation workers"]
+AGG --> SH["Shop: gross and net sales, refunds, fees, AOV, service and payment mix"]
+AGG --> RS["Resource: jobs, pages, utilization, failures, downtime"]
+AGG --> SF["Staff: approvals, verifications, pickups, corrections"]
+SH --> MD["Merchant dashboard"]
+RS --> MD
+SF --> MD
+AGG --> GD["Golden Admin analytics"]
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 28 -->
+      <article id="d-28" class="diagram-card" data-tags="arch">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">28</span>
+            <h3>Golden Admin Operations Overview</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> Platform-wide oversight: health monitoring, payout reconciliation, and dispute support without altering shop catalog pricing.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+flowchart LR
+GA["Golden Admin"] --> OV["Overview: shops, orders, revenue, active jobs"]
+GA --> SH["Shops and subscriptions"]
+GA --> HE["System health: offline Print Stations, failed jobs, alerts"]
+GA --> PY["Payments and reconciliation"]
+GA --> SU["Support tickets"]
+GA --> AU["Admin and audit log"]
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 29 -->
+      <article id="d-29" class="diagram-card" data-tags="future">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">29</span>
+            <h3>Multi-Service Orders (Future Roadmap)</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> Extensible order model supporting compound services: B&W pages + Color Cover + Lamination + Spiral Binding.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+flowchart TD
+O["Order"] --> I1["OrderItem: B&W pages"] --> T1["Print task"] --> R1["Printer"]
+O --> I2["OrderItem: color cover"] --> T2["Color print task"] --> R2["Color printer"]
+O --> I3["OrderItem: lamination"] --> T3["Lamination task"] --> R3["Laminator"]
+O --> I4["OrderItem: binding"] --> T4["Binding task"] --> R4["Binding station"]
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 30 -->
+      <article id="d-30" class="diagram-card" data-tags="future">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">30</span>
+            <h3>Marketplace, APIs & Delivery Network (Future)</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> Phase 2 expansion into multi-shop discovery, university ERP integrations, and courier delivery dispatching.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+flowchart LR
+MK["Marketplace: compare shops by distance, price, ETA"] -.-> CORE(("Core platform: orders, routing, ETA"))
+UP["University or corporate portal"] -.->|"Platform API"| CORE
+DL["Delivery partner"] -.-> CORE
+CORE --> SHOPS["Shops and resources"]
+          </pre>
+        </div>
+      </article>
+
+
+      <!-- ==========================================
+           BATCH 5: OPERATIONS & OBSERVABILITY (31-38)
+           ========================================== -->
+      <section id="batch-5" class="batch-divider">
+        <div class="batch-badge">Batch 5</div>
+        <h2>Operational Deep Dives & Observability (Diagrams 31 to 38)</h2>
+        <p class="batch-desc">Automated payment reconciliation cron jobs, routing logic trees, OS spooler limitations, and centralized monitoring.</p>
+      </section>
+
+      <!-- Diagram 31 -->
+      <article id="d-31" class="diagram-card" data-tags="payment">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">31</span>
+            <h3>Automated Payment Reconciliation</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> Scheduled job cross-checks gateway settlements against database orders to recover dropouts and refund ghost charges.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+flowchart TD
+J["Reconciliation job, runs on a schedule"] --> G["Fetch gateway transactions"]
+J --> D["Fetch platform payments and orders"]
+G --> CMP{"Compare"}
+D --> CMP
+CMP -->|"Match"| OK["Nothing to do"]
+CMP -->|"Paid at gateway, no order or still pending"| FIX["Recover: mark PAID, continue order"]
+CMP -->|"Duplicate payment"| DUP["Refund or adjust the extra one"]
+CMP -->|"Order paid, gateway shows none"| INV["Flag for manual investigation"]
+FIX --> AUD[("Audit log")]
+DUP --> AUD
+INV --> AL["Alert Golden Admin"]
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 32 -->
+      <article id="d-32" class="diagram-card" data-tags="core">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">32</span>
+            <h3>Routing Decision Logic Tree</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> Deterministic, transparent rule evaluation tree ensuring predictable hardware selection and lowest customer wait time.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+flowchart TD
+S["Approved job"] --> C1{"Needs color?"}
+C1 -->|"Yes"| K1["Only color-capable resources"]
+C1 -->|"No"| K2["All resources"]
+K1 --> C2{"Paper size supported?"}
+K2 --> C2
+C2 -->|"No resource"| X["Hold and alert merchant"]
+C2 -->|"Yes"| C3{"Owner policy ENABLED and system healthy?"}
+C3 -->|"None"| X
+C3 -->|"Some"| C4{"Merchant rule matches? small B&W, bulk, photo"}
+C4 -->|"Yes"| P["Prefer the rule's resource if healthy"]
+C4 -->|"No"| L["Lowest ETA among candidates"]
+P --> A["Assign resource"]
+L --> A
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 33 -->
+      <article id="d-33" class="diagram-card" data-tags="print">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">33</span>
+            <h3>Print Station to OS Print Spooler Execution</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> Documents how silent browser printing interfaces with the Windows Print Spooler and deletes local cached copies immediately after handoff.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+sequenceDiagram
+participant A as Print Station
+participant F as Local cache
+participant S as OS Print Queue
+participant P as Printer
+A->>F: Prefetch next jobs, verify checksum
+A->>S: Silent print, no dialog, default printer
+S->>P: Send data
+P-->>S: Little or no detail reaches the browser
+S-->>A: Submitted, limited status
+A->>A: Report sent to cloud, staff verify the pages
+A->>F: Delete cached file
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 34 -->
+      <article id="d-34" class="diagram-card" data-tags="print payment">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">34</span>
+            <h3>Partial Print Recovery & Tray Counting</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> Never blindly reprint an entire 100-page job on a mid-way paper jam; staff count physical pages and resume from page N+1.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+flowchart TD
+F["Printer fails after some pages"] --> PA["Pause resource, stop new routing"]
+PA --> ST["Staff count pages physically printed"]
+ST --> D{"Staff decision"}
+D -->|"Continue remaining"| R1["New task: pages from N+1"]
+D -->|"Restart"| R2["Discard partial, reprint all"]
+D -->|"Reassign"| R3["Route remaining to another capable printer"]
+D -->|"Cancel"| R4["Cancel and refund"]
+R1 --> RT["Routing and ETA recalculated"]
+R2 --> RT
+R3 --> RT
+RT --> NT["Notify customer: reason and new ETA"]
+R1 -.-> AU[("Audit: decision and pages counted")]
+R2 -.-> AU
+R3 -.-> AU
+R4 -.-> AU
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 35 -->
+      <article id="d-35" class="diagram-card" data-tags="arch">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">35</span>
+            <h3>Customer App Architecture (Web & Mobile)</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> Frictionless Web-first flow for QR scans with optional Expo mobile app for push notifications and repeat order history.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+flowchart LR
+QR["Shop QR"] --> W["Customer Web"]
+W --> F1["Shop and services"]
+W --> F2["Upload and label"]
+W --> F3["Options, price, ETA"]
+W --> F4["Pay"]
+W --> F5["Track order"]
+W --> F6["Pickup OTP or QR"]
+M["Customer Mobile, Expo"] --> F5
+M --> F6
+F1 --> API["Platform API"]
+F2 --> API
+F3 --> API
+F4 --> API
+F5 <--> WS["WebSocket updates"]
+F6 --> API
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 36 -->
+      <article id="d-36" class="diagram-card" data-tags="arch">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">36</span>
+            <h3>Merchant Application Architecture</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> Unified dashboard for live queue monitoring, hardware provisioning, pricing configuration, and staff management.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+flowchart TD
+MW["Merchant Web / Mobile"] --> OPS["Operations: live queue, approvals, verification, pickup"]
+MW --> RES["Resources: printers, capabilities, routing rules, Print Stations"]
+MW --> CAT["Catalog: services and prices"]
+MW --> TEAM["Staff and permissions"]
+MW --> FIN["Revenue dashboard and settlements"]
+MW --> SET["Settings: approval rules, separator rule, subscription"]
+OPS <--> WS["WebSocket: live queue"]
+OPS --> API["Platform API"]
+RES --> API
+CAT --> API
+TEAM --> API
+FIN --> API
+SET --> API
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 37 -->
+      <article id="d-37" class="diagram-card" data-tags="arch">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">37</span>
+            <h3>Golden Admin Architecture</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> Read-heavy analytical architecture connected to read-replicas for system-wide health and dispute resolution.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+flowchart TD
+GA["Golden Admin UI"] --> AUTHZ["Admin auth and admin roles"]
+AUTHZ --> V1["Overview and metrics"]
+AUTHZ --> V2["Shops, customers, orders"]
+AUTHZ --> V3["Resources and Print Station health"]
+AUTHZ --> V4["Payments and subscriptions"]
+AUTHZ --> V5["Support tickets"]
+AUTHZ --> V6["Platform settings"]
+V1 --> RD[("Read replicas and analytics store")]
+V2 --> RD
+V3 --> MON["Monitoring and alerts"]
+V4 --> API["Platform API"]
+V5 --> API
+V6 --> API
+API --> AUD[("Audit log for every sensitive action")]
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 38 -->
+      <article id="d-38" class="diagram-card" data-tags="arch">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">38</span>
+            <h3>Platform Observability & Alerting Pipeline</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> Centralized metrics and log aggregation catching heartbeat drops, queue spikes, and payment discrepancies before users notice.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+flowchart LR
+SRC1["API and workers"] --> LG["Logs, metrics, traces"]
+SRC2["Print Station heartbeats"] --> LG
+SRC3["Queue depth and failures"] --> LG
+SRC4["Payment mismatches"] --> LG
+LG --> DASH["Dashboards"]
+LG --> ALR{"Threshold breached?"}
+ALR -->|"Yes"| NOTIFY["Alert on-call and Golden Admin"]
+ALR -->|"No"| DASH
+          </pre>
+        </div>
+      </article>
+
+
+      <!-- ==========================================
+           FINAL BATCH: SYSTEM CONTEXT & INFRA (39-53)
+           ========================================== -->
+      <section id="batch-final" class="batch-divider">
+        <div class="batch-badge">Final Batch</div>
+        <h2>System Context, End-to-End & File Delivery (Diagrams 39 to 53)</h2>
+        <p class="batch-desc">Full lifecycle traces, document presigned upload mechanics, staff permission hierarchies, and ultra-fast file prefetch caching.</p>
+      </section>
+
+      <!-- Diagram 39 -->
+      <article id="d-39" class="diagram-card" data-tags="arch">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">39</span>
+            <h3>System Context Diagram</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> High-level C4 boundary diagram positioning Printli between payment gateways, SMS/push providers, storage, and shop stations.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+flowchart LR
+CU["Customers"] --> P(("Print Platform"))
+MR["Merchants and staff"] --> P
+AD["Platform admins"] --> P
+P <--> PG["Payment gateway"]
+P --> NP["Notification providers"]
+P <--> AG["Print Stations and printers at shops"]
+P <--> ST["Object storage"]
+EX["External apps via API: FUTURE"] -.-> P
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 40 -->
+      <article id="d-40" class="diagram-card" data-tags="core">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">40</span>
+            <h3>End-to-End Business Process</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> Complete chronological trace from file upload to physical handover, highlighting which actor performs each action.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+flowchart TD
+A["Customer: upload, configure, see price and ETA"] --> B["Customer: pay"]
+B --> C["Platform: verify payment, apply approval rules"]
+C --> D["Shop: approve if needed"]
+D --> E["Platform: route to resource, queue"]
+E --> F["Print Station and printer: print"]
+F --> G["Staff: physical verification"]
+G --> H["Platform: notify customer, send OTP"]
+H --> I["Customer: arrives, shows OTP or QR"]
+I --> J["Staff: verify and hand over"]
+J --> K["Platform: COLLECTED, update revenue and analytics"]
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 41 -->
+      <article id="d-41" class="diagram-card" data-tags="core">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">41</span>
+            <h3>Order Creation Sequence Flow</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> Validates document configurations against shop capabilities prior to initiating payment.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+sequenceDiagram
+participant C as Customer
+participant API as Platform API
+participant DB as Database
+C->>API: Create order, idempotency key
+API->>DB: Order CREATED, or return existing one
+C->>API: Upload document and label
+C->>API: Select options
+API->>API: Check options against shop capabilities
+API-->>C: Price and ETA range
+C->>API: Confirm, go to payment
+API->>DB: PAYMENT_PENDING
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 42 -->
+      <article id="d-42" class="diagram-card" data-tags="arch">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">42</span>
+            <h3>Document Upload & Storage Architecture</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> Direct-to-storage presigned uploads with strict MIME/page validation. The original document is never mutated.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+flowchart TD
+U["Customer picks file"] --> V{"Type and size allowed?"}
+V -->|"No"| RJ["Reject before payment"]
+V -->|"Yes"| ST[("Encrypted object storage, original unchanged")]
+ST --> MT["Metadata in DB: label, page count, owner, shop, expiry"]
+MT --> PRV["Page count feeds price and ETA"]
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 43 -->
+      <article id="d-43" class="diagram-card" data-tags="core payment">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">43</span>
+            <h3>Pickup Lifecycle State Machine</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> Governs physical package custody, customer arrival flags, OTP validation, and uncollected paper recycling policies.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+stateDiagram-v2
+[*] --> READY_FOR_PICKUP: OTP and QR issued
+READY_FOR_PICKUP --> ARRIVED: FUTURE, I am at the shop
+ARRIVED --> VERIFIED
+READY_FOR_PICKUP --> VERIFIED: code matches
+READY_FOR_PICKUP --> LOST_CODE: customer lost code
+LOST_CODE --> VERIFIED: alternate check, audited
+READY_FOR_PICKUP --> UNCOLLECTED: retention window passed
+VERIFIED --> COLLECTED
+UNCOLLECTED --> DISPOSED: per policy
+COLLECTED --> [*]
+DISPOSED --> [*]
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 44 -->
+      <article id="d-44" class="diagram-card" data-tags="core">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">44</span>
+            <h3>Customer-Facing Status Mapping</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> Internal state codes are mapped to clear human messages. Customers never see confusing intermediate engineering statuses.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+flowchart LR
+S1["PAID, AWAITING_APPROVAL"] --> M1["Order received"]
+S2["APPROVED, QUEUED, RESOURCE_ASSIGNED"] --> M2["In queue, ETA shown"]
+S3["PRINTING"] --> M3["Printing now"]
+S4["PRINT_COMPLETED, PHYSICAL_VERIFICATION"] --> M4["Checking your pages"]
+S5["ERROR, retry or reassign"] --> M5["Issue found, new ETA"]
+S6["READY_FOR_PICKUP"] --> M6["Ready, show your OTP"]
+S7["COLLECTED"] --> M7["Done"]
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 45 -->
+      <article id="d-45" class="diagram-card" data-tags="arch">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">45</span>
+            <h3>WebSocket & Push Fallback Protocol</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> Seamlessly transitions between live browser WebSocket rooms when the customer has the app open and push notifications when closed.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+sequenceDiagram
+participant E as Event source
+participant N as Notification service
+participant W as WebSocket gateway
+participant U as Customer app
+participant P as Push provider
+E->>N: Order event
+N->>W: Publish to order room
+alt App connected
+ W-->>U: Live status update
+else Not connected
+ N->>P: Send push
+ P-->>U: Push message
+end
+U->>W: Reconnect later, fetch latest state
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 46 -->
+      <article id="d-46" class="diagram-card" data-tags="print">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">46</span>
+            <h3>Shop PC Driver & Spooler Communication</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> Details the boundary between web browser sandboxes, Windows spoolers, USB/Network drivers, and native agent fallback options.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+flowchart LR
+CL["Cloud print queue"] --> PS["Print Station web page: own window, silent print mode"]
+PS --> SP["OS print queue: Windows spooler"]
+SP --> D1["Driver, default printer settings"]
+D1 --> U1["USB printer"]
+D1 --> N1["Network printer"]
+SP -.->|"limited status"| PS
+PS -.->|"sent, errors it can see"| CL
+STF["Staff physical check"] -.->|"real outcome"| CL
+FB["FALLBACK: native agent sets printer and options per job"] -.-> SP
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 47 -->
+      <article id="d-47" class="diagram-card" data-tags="print">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">47</span>
+            <h3>Resource Lifecycle & Maintenance Policies</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> How shop owners register, configure capability limits, put printers into maintenance, or retire them from the pool.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+flowchart TD
+A["Owner enters printer details and links it to a Print Station"] --> B["Owner registers resource"]
+B --> C["Owner sets capabilities and speed"]
+C --> D["Owner sets policy: ENABLED, MANUAL_ONLY, MAINTENANCE, DISABLED"]
+D --> E["Resource joins routing pool"]
+E --> F["System health overrides: OFFLINE or ERROR means no new jobs"]
+D --> G["Owner can disable or remove at any time"]
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 48 -->
+      <article id="d-48" class="diagram-card" data-tags="arch">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">48</span>
+            <h3>Granular Document Access Control</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> Files are accessible only to the uploading customer and the specific paired station with a time-limited signed URL for approved jobs.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+flowchart TD
+R["Request for a document"] --> W{"Who?"}
+W -->|"Owner customer"| OK["Allow"]
+W -->|"Print Station for assigned approved job"| TMP["Short-lived signed access"]
+W -->|"Staff of the same shop"| ST{"Role allows?"}
+W -->|"Other shop or user"| DN["Deny"]
+ST -->|"Yes"| OK
+ST -->|"No"| DN
+OK --> LG[("Access log")]
+TMP --> LG
+DN --> LG
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 49 -->
+      <article id="d-49" class="diagram-card" data-tags="arch">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">49</span>
+            <h3>Shop Staff Permission Hierarchy</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> Role boundaries: Owner (financials & staff), Manager (routing & approval), Operator (queue execution), and Cashier (pickup verification).</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+flowchart TD
+OW["Owner"] --> AL["All shop settings, pricing, staff, refunds, revenue"]
+MG["Manager"] --> MGP["Approvals, routing rules, reassign, reports"]
+OP["Operator"] --> OPP["Process queue, mark physical verification"]
+CS["Cashier or pickup desk"] --> CSP["Verify pickup codes, hand over"]
+AL --> AU[("Every action is attributed and audited")]
+MGP --> AU
+OPP --> AU
+CSP --> AU
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 50 -->
+      <article id="d-50" class="diagram-card" data-tags="core payment">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">50</span>
+            <h3>Priority Edge Case: Route Disappearance</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> Consumer protection: if high-speed hardware fails mid-queue, the priority surcharge is refunded automatically or customer is offered revised choices.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+flowchart TD
+P["Priority order paid"] --> M{"Priority path still faster?"}
+M -->|"Yes"| K["Continue with priority"]
+M -->|"No"| POL{"Predefined policy"}
+POL --> R1["Refund priority fee"]
+POL --> R2["Offer new ETA and let customer choose"]
+R1 --> N["Notify customer with reason"]
+R2 --> N
+N --> AU[("Audit and priority refund metric")]
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 51 -->
+      <article id="d-51" class="diagram-card" data-tags="future">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">51</span>
+            <h3>Multi-Hardware Resource Orchestration (Future)</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> Future-proof task scheduler generalized for 3D printers, laminators, CNC cutters, and human assembly steps.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+flowchart TD
+T["Tasks from orders"] --> RE["Resource orchestrator: capability, health, queue, ETA"]
+RE --> R1["Printers"]
+RE --> R2["Scanners"]
+RE --> R3["Laminators"]
+RE --> R4["Binding stations"]
+RE --> R5["Human tasks"]
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 52 -->
+      <article id="d-52" class="diagram-card" data-tags="future">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">52</span>
+            <h3>External API & Institutional Gateways (Future)</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> B2B developer API with scoped API keys, rate limiters, webhooks, and institutional billing.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+flowchart LR
+UP["University portal"] -.-> GW["Public API: keys, rate limits"]
+CP["Corporate system"] -.-> GW
+TP["Third-party app"] -.-> GW
+GW --> OR["Create order, get status, ETA, payment status"]
+OR --> CORE(("Core platform"))
+CORE -.->|"webhooks"| UP
+CORE -.->|"webhooks"| CP
+INS["Institutional wallet or plan: FUTURE"] -.-> CORE
+          </pre>
+        </div>
+      </article>
+
+      <!-- Diagram 53 -->
+      <article id="d-53" class="diagram-card" data-tags="print arch">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="diagram-number">53</span>
+            <h3>File Delivery, Prefetch & Zero-Wait Printing</h3>
+          </div>
+          <div class="card-actions">
+            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
+            <button class="btn-action copy-btn">📋 Copy</button>
+          </div>
+        </div>
+        <p class="card-why"><strong>Why this matters:</strong> Heavy files never transit queues. The station prefetches the upcoming 1-2 jobs in background while the printer is executing, ensuring 100% duty cycle.</p>
+        <div class="diagram-viewport">
+          <pre class="mermaid">
+flowchart TD
+U["Customer uploads direct to object storage with a presigned URL"] --> N["Server processes once: validate, page count, print-ready PDF copy, original untouched"]
+N --> ST[("Encrypted object storage, India region")]
+AP["Job APPROVED and queued"] --> MSG["Small job message to the Print Station"]
+MSG --> LA{"In the next 1 to 2 jobs for its printer?"}
+LA -->|"No"| WT["Wait: message only, no file yet"]
+LA -->|"Yes"| PF["Prefetch via short-lived signed URL, resumable, checksum"]
+ST --> PF
+PF --> LC[("Local cache on shop PC")]
+LC --> PR["Print when the printer is free"]
+PR --> DEL["Delete local copy after printing"]
+NET["Internet drops"] -.-> OFFL["Cached jobs keep printing, status syncs later with the same job id, no reprint"]
+OFFL -.-> LC
+          </pre>
+        </div>
+      </article>
+
+      <!-- Footer -->
+      <footer class="site-footer">
+        <div class="footer-content">
+          <div class="footer-brand">
+            <strong>Printli Architecture Portal</strong> — Complete Engineering Specification
+          </div>
+          <p class="footer-note">Published with GitHub Pages · Maintained by saigurrala-dev</p>
+        </div>
+      </footer>
+
+    </main>
+  </div>
+
+  <!-- Zoom Modal -->
+  <div id="zoom-modal" class="zoom-modal" aria-hidden="true">
+    <div class="zoom-modal-backdrop"></div>
+    <div class="zoom-modal-window">
+      <div class="zoom-modal-header">
+        <h4 id="zoom-modal-title">Diagram Inspection</h4>
+        <div class="zoom-controls">
+          <button id="zoom-in" class="ctrl-btn" title="Zoom In">+</button>
+          <button id="zoom-out" class="ctrl-btn" title="Zoom Out">-</button>
+          <button id="zoom-reset" class="ctrl-btn" title="Reset">Reset</button>
+          <button id="zoom-close" class="ctrl-btn close-btn" title="Close">✕</button>
+        </div>
+      </div>
+      <div class="zoom-modal-canvas" id="zoom-canvas">
+        <div id="zoom-target" class="zoom-target"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast" role="alert"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
