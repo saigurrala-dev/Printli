@@ -212,29 +212,185 @@ document.addEventListener('DOMContentLoaded', () => {
   initMermaid();
 
   // ==========================================================================
-  // Diagram Search
+  // Diagram Search with Interactive Suggestions
   // ==========================================================================
   const searchInput = document.getElementById('diagram-search');
   const searchCount = document.getElementById('search-count');
+  const searchSuggestions = document.getElementById('search-suggestions');
   const cards = Array.from(document.querySelectorAll('.diagram-card'));
   const batchDividers = document.querySelectorAll('.batch-divider');
+
+  // Pre-build searchable index of all 53 diagrams
+  const diagramIndex = cards.map(card => {
+    const id = card.id;
+    const numEl = card.querySelector('.diagram-number');
+    const num = numEl ? numEl.textContent.trim() : '';
+    const titleEl = card.querySelector('h2, h3');
+    const title = titleEl ? titleEl.textContent.replace(num, '').trim() : '';
+    const fullTitle = titleEl ? titleEl.textContent.trim() : '';
+    const explanation = (card.querySelector('.card-explanation')?.textContent || '').trim();
+    const mermaid = (card.querySelector('.mermaid')?.textContent || '').trim();
+    
+    // Find closest preceding batch header for context
+    let prev = card.previousElementSibling;
+    let batchName = 'System Architecture';
+    while (prev) {
+      if (prev.classList.contains('batch-divider')) {
+        const h = prev.querySelector('h2, h3');
+        if (h) batchName = h.textContent.trim();
+        break;
+      }
+      prev = prev.previousElementSibling;
+    }
+
+    return {
+      card,
+      id,
+      num,
+      title,
+      fullTitle,
+      batchName,
+      explanation,
+      mermaid,
+      searchCorpus: `${num} ${title} ${batchName} ${explanation} ${mermaid}`.toLowerCase()
+    };
+  });
+
+  const popularTopics = [
+    { label: 'Payment & Escrow', query: 'payment' },
+    { label: 'Print Station & WebSockets', query: 'print station' },
+    { label: 'Authentication & RBAC', query: 'rbac' },
+    { label: 'Multi-Tenancy', query: 'tenancy' },
+    { label: 'Routing & Auto-Assignment', query: 'routing' },
+    { label: 'Offline Resilience', query: 'offline' },
+    { label: 'Order State Machine', query: 'order state' },
+    { label: 'Refund & Disputes', query: 'refund' },
+    { label: 'Audit Logging', query: 'audit' }
+  ];
+
+  let selectedSuggestionIndex = -1;
+
+  function jumpToDiagram(cardId) {
+    const targetCard = document.getElementById(cardId);
+    if (!targetCard) return;
+
+    // Reset all cards to visible so scroll works smoothly
+    cards.forEach(c => c.style.display = 'block');
+    batchDividers.forEach(b => b.style.display = 'block');
+    searchCount.textContent = `53 diagrams`;
+    
+    // Close suggestions
+    hideSuggestions();
+
+    // Smooth scroll to target
+    targetCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    // Trigger visual glow highlight
+    targetCard.classList.remove('highlight-target');
+    void targetCard.offsetWidth; // Force reflow
+    targetCard.classList.add('highlight-target');
+  }
+
+  function hideSuggestions() {
+    if (!searchSuggestions) return;
+    searchSuggestions.hidden = true;
+    searchSuggestions.innerHTML = '';
+    selectedSuggestionIndex = -1;
+  }
+
+  function escapeHtml(str) {
+    return (str || '').replace(/[&<>'"]/g, tag => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      "'": '&#39;',
+      '"': '&quot;'
+    }[tag] || tag));
+  }
+
+  function highlightMatches(text, query) {
+    if (!query) return escapeHtml(text);
+    const escaped = escapeHtml(text);
+    const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+    return escaped.replace(regex, '<span class="suggestion-highlight">$1</span>');
+  }
+
+  function renderSuggestions(query) {
+    if (!searchSuggestions) return;
+    query = (query || '').trim().toLowerCase();
+
+    if (!query) {
+      // Render popular topics suggestions
+      let html = `
+        <div class="suggestion-header">Popular Topics & Concepts</div>
+        <div class="suggestion-pills">
+      `;
+      popularTopics.forEach(t => {
+        html += `<button type="button" class="suggestion-pill" data-query="${escapeHtml(t.query)}">${escapeHtml(t.label)}</button>`;
+      });
+      html += `</div>`;
+      searchSuggestions.innerHTML = html;
+      searchSuggestions.hidden = false;
+
+      searchSuggestions.querySelectorAll('.suggestion-pill').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const q = btn.getAttribute('data-query');
+          searchInput.value = q;
+          filterDiagrams();
+          renderSuggestions(q);
+        });
+      });
+      return;
+    }
+
+    // Filter index for query
+    const matches = diagramIndex.filter(item => item.searchCorpus.includes(query)).slice(0, 8);
+
+    if (matches.length === 0) {
+      searchSuggestions.innerHTML = `<div class="suggestion-empty">No diagrams found matching "${escapeHtml(query)}"</div>`;
+      searchSuggestions.hidden = false;
+      return;
+    }
+
+    let html = `<div class="suggestion-header">Suggested Diagrams (${matches.length})</div>`;
+    matches.forEach((item, index) => {
+      html += `
+        <div class="suggestion-item" data-id="${item.id}" data-index="${index}">
+          <div class="suggestion-item-main">
+            <span class="suggestion-num">${escapeHtml(item.num || '#')}</span>
+            <span class="suggestion-title">${highlightMatches(item.title || item.fullTitle, query)}</span>
+          </div>
+          <span class="suggestion-batch">${escapeHtml(item.batchName.split(':')[0] || 'Diagram')}</span>
+        </div>
+      `;
+    });
+
+    searchSuggestions.innerHTML = html;
+    searchSuggestions.hidden = false;
+    selectedSuggestionIndex = -1;
+
+    // Attach click handlers
+    searchSuggestions.querySelectorAll('.suggestion-item').forEach(itemEl => {
+      itemEl.addEventListener('click', (e) => {
+        e.preventDefault();
+        const id = itemEl.getAttribute('data-id');
+        jumpToDiagram(id);
+      });
+    });
+  }
 
   function filterDiagrams() {
     const query = searchInput.value.toLowerCase().trim();
     let visibleCount = 0;
 
-    cards.forEach(card => {
-      const title = (card.querySelector('h2, h3')?.textContent || '').toLowerCase();
-      const explanation = (card.querySelector('.card-explanation')?.textContent || '').toLowerCase();
-      const mermaidCode = (card.querySelector('.mermaid')?.textContent || '').toLowerCase();
-
-      const matchesSearch = !query || title.includes(query) || explanation.includes(query) || mermaidCode.includes(query);
-
+    diagramIndex.forEach(item => {
+      const matchesSearch = !query || item.searchCorpus.includes(query);
       if (matchesSearch) {
-        card.style.display = 'block';
+        item.card.style.display = 'block';
         visibleCount++;
       } else {
-        card.style.display = 'none';
+        item.card.style.display = 'none';
       }
     });
 
@@ -256,7 +412,60 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  searchInput.addEventListener('input', filterDiagrams);
+  if (searchInput) {
+    searchInput.addEventListener('input', () => {
+      filterDiagrams();
+      renderSuggestions(searchInput.value);
+    });
+
+    searchInput.addEventListener('focus', () => {
+      renderSuggestions(searchInput.value);
+    });
+
+    // Keyboard Navigation inside suggestions
+    searchInput.addEventListener('keydown', (e) => {
+      if (!searchSuggestions || searchSuggestions.hidden) return;
+
+      const items = searchSuggestions.querySelectorAll('.suggestion-item');
+      if (!items.length) return;
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        selectedSuggestionIndex = (selectedSuggestionIndex + 1) % items.length;
+        updateSuggestionSelection(items);
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        selectedSuggestionIndex = (selectedSuggestionIndex - 1 + items.length) % items.length;
+        updateSuggestionSelection(items);
+      } else if (e.key === 'Enter') {
+        if (selectedSuggestionIndex >= 0 && selectedSuggestionIndex < items.length) {
+          e.preventDefault();
+          const id = items[selectedSuggestionIndex].getAttribute('data-id');
+          jumpToDiagram(id);
+        }
+      } else if (e.key === 'Escape') {
+        hideSuggestions();
+      }
+    });
+  }
+
+  function updateSuggestionSelection(items) {
+    items.forEach((item, idx) => {
+      if (idx === selectedSuggestionIndex) {
+        item.classList.add('selected');
+        item.scrollIntoView({ block: 'nearest' });
+      } else {
+        item.classList.remove('selected');
+      }
+    });
+  }
+
+  // Click outside to close suggestions
+  document.addEventListener('click', (e) => {
+    if (searchInput && searchSuggestions && !searchInput.contains(e.target) && !searchSuggestions.contains(e.target)) {
+      hideSuggestions();
+    }
+  });
 
   // ==========================================================================
   // Zoom & Fullscreen Modal (with Panzoom)
