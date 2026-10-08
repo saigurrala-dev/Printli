@@ -19,10 +19,7 @@
   <header class="site-header">
     <div class="header-container">
       <div class="logo-group">
-        <div class="logo-icon">🖨️</div>
-        <div>
-          <span class="logo-title">Printli Docs</span>
-        </div>
+        <span class="logo-title">Printli Documentation</span>
       </div>
 
       <div class="search-wrapper">
@@ -30,46 +27,27 @@
         <input type="text" id="diagram-search" placeholder="Search 53 diagrams, concepts, workflows..." autocomplete="off">
         <span class="search-count" id="search-count">53 diagrams</span>
       </div>
-
-      <div class="header-actions">
-        <button id="theme-toggle" class="icon-btn" title="Toggle Light/Dark Theme" aria-label="Toggle Theme">
-          <span class="theme-icon">☀️</span>
-        </button>
-      </div>
     </div>
   </header>
-
-  <!-- Filter / Tag bar -->
-  <div class="filter-bar">
-    <div class="filter-container">
-      <span class="filter-label">Filter:</span>
-      <button class="filter-pill active" data-filter="all">All Diagrams (53)</button>
-      <button class="filter-pill" data-filter="core">Core Flow (1-12)</button>
-      <button class="filter-pill" data-filter="arch">Architecture & Cloud (15-18, 35-37)</button>
-      <button class="filter-pill" data-filter="print">Print Station & Hardware (6, 19-22, 33, 46, 53)</button>
-      <button class="filter-pill" data-filter="payment">Payment & Verification (4, 12, 25, 31, 34)</button>
-      <button class="filter-pill" data-filter="future">Future & Roadmap (29, 30, 51, 52)</button>
-    </div>
-  </div>
 
   <div class="layout-wrapper">
     <!-- Sidebar / TOC -->
     <aside class="toc-sidebar">
       <div class="toc-header">
         <h3>Contents</h3>
-        <span class="toc-subtitle">Quick Navigation</span>
+        <span class="toc-subtitle">System Index</span>
       </div>
       <nav class="toc-nav">
         <div class="toc-group">
-          <a href="#master" class="toc-group-title">🌟 Master Architecture</a>
+          <a href="#master" class="toc-group-title">Master Architecture</a>
           <ul class="toc-list">
             <li><a href="#master-platform">Platform Overview</a></li>
-            <li><a href="#roles-guide">Role-based Reading Guide</a></li>
+            <li><a href="#roles-guide">Reading Guide by Role</a></li>
           </ul>
         </div>
 
         <div class="toc-group">
-          <a href="#batch-core" class="toc-group-title">📌 Batch 1: Core (1-12)</a>
+          <a href="#batch-core" class="toc-group-title">Batch 1: Core Flow (1-12)</a>
           <ul class="toc-list">
             <li><a href="#d-1">1. Product Ecosystem</a></li>
             <li><a href="#d-2">2. Customer Journey</a></li>
@@ -80,14 +58,14 @@
             <li><a href="#d-7">7. Device Pairing</a></li>
             <li><a href="#d-8">8. Printer States</a></li>
             <li><a href="#d-9">9. Smart Routing</a></li>
-            <li><a href="#d-10">10. ETA Engine</a></li>
+            <li><a href="#d-10">10. ETA Calculation</a></li>
             <li><a href="#d-11">11. Priority Service</a></li>
             <li><a href="#d-12">12. Physical Verification</a></li>
           </ul>
         </div>
 
         <div class="toc-group">
-          <a href="#batch-2-4" class="toc-group-title">👥 Batches 2-4 (13-30)</a>
+          <a href="#batch-2-4" class="toc-group-title">Batches 2-4: Systems (13-30)</a>
           <ul class="toc-list">
             <li><a href="#d-13">13. Stakeholder Map</a></li>
             <li><a href="#d-14">14. Merchant & Staff</a></li>
@@ -95,48 +73,48 @@
             <li><a href="#d-16">16. Frontend Apps</a></li>
             <li><a href="#d-17">17. Multi-Tenancy</a></li>
             <li><a href="#d-18">18. Auth & RBAC</a></li>
-            <li><a href="#d-19">19. Print Queue Comm</a></li>
+            <li><a href="#d-19">19. Print Queue Protocol</a></li>
             <li><a href="#d-20">20. Station Heartbeat</a></li>
             <li><a href="#d-21">21. Printer Capabilities</a></li>
             <li><a href="#d-22">22. Job Separation</a></li>
-            <li><a href="#d-23">23. Real-Time Events</a></li>
-            <li><a href="#d-24">24. Document Security</a></li>
+            <li><a href="#d-23">23. Notifications & Events</a></li>
+            <li><a href="#d-24">24. Document Lifecycle</a></li>
             <li><a href="#d-25">25. Audit & Pickup</a></li>
-            <li><a href="#d-26">26. Monetization</a></li>
+            <li><a href="#d-26">26. Monetization & Pricing</a></li>
             <li><a href="#d-27">27. Analytics Engine</a></li>
             <li><a href="#d-28">28. Golden Admin</a></li>
-            <li><a href="#d-29">29. Multi-Service (Future)</a></li>
-            <li><a href="#d-30">30. Marketplace (Future)</a></li>
+            <li><a href="#d-29">29. Multi-Service Orders</a></li>
+            <li><a href="#d-30">30. Marketplace & Delivery</a></li>
           </ul>
         </div>
 
         <div class="toc-group">
-          <a href="#batch-5" class="toc-group-title">⚙️ Batch 5: Deep Dives (31-38)</a>
+          <a href="#batch-5" class="toc-group-title">Batch 5: Operations (31-38)</a>
           <ul class="toc-list">
             <li><a href="#d-31">31. Payment Reconciliation</a></li>
             <li><a href="#d-32">32. Routing Decision Tree</a></li>
-            <li><a href="#d-33">33. Station to Spooler</a></li>
+            <li><a href="#d-33">33. Station to OS Spooler</a></li>
             <li><a href="#d-34">34. Partial Print Recovery</a></li>
             <li><a href="#d-35">35. Customer App Arch</a></li>
             <li><a href="#d-36">36. Merchant App Arch</a></li>
             <li><a href="#d-37">37. Golden Admin Arch</a></li>
-            <li><a href="#d-38">38. Observability</a></li>
+            <li><a href="#d-38">38. Observability & Alerts</a></li>
           </ul>
         </div>
 
         <div class="toc-group">
-          <a href="#batch-final" class="toc-group-title">🚀 Final Batch: Infra (39-53)</a>
+          <a href="#batch-final" class="toc-group-title">Final Batch: Infra (39-53)</a>
           <ul class="toc-list">
             <li><a href="#d-39">39. System Context</a></li>
-            <li><a href="#d-40">40. End-to-End Process</a></li>
-            <li><a href="#d-41">41. Order Creation Flow</a></li>
+            <li><a href="#d-40">40. End-to-End Business Flow</a></li>
+            <li><a href="#d-41">41. Order Creation Sequence</a></li>
             <li><a href="#d-42">42. Upload & Storage</a></li>
             <li><a href="#d-43">43. Pickup Lifecycle</a></li>
-            <li><a href="#d-44">44. Customer Status Flow</a></li>
+            <li><a href="#d-44">44. Customer Status Mapping</a></li>
             <li><a href="#d-45">45. Push & WebSockets</a></li>
             <li><a href="#d-46">46. Printer Spooler Detail</a></li>
             <li><a href="#d-47">47. Resource Lifecycle</a></li>
-            <li><a href="#d-48">48. Doc Access Control</a></li>
+            <li><a href="#d-48">48. Document Access Control</a></li>
             <li><a href="#d-49">49. Staff Permissions</a></li>
             <li><a href="#d-50">50. Priority Edge Cases</a></li>
             <li><a href="#d-51">51. Resource Orchestration</a></li>
@@ -152,16 +130,15 @@
 
       <!-- Master Hero Banner -->
       <section id="master" class="hero-section">
-        <div class="hero-badge">Architecture & Specification Portal</div>
-        <h1 class="hero-title">Printli Platform Architecture</h1>
+        <div class="hero-badge">Architecture & System Specification</div>
+        <h1 class="hero-title">Printli System Architecture</h1>
         <p class="hero-lead">
-          <strong>Central Thesis:</strong> The platform is an intelligent bridge connecting digital customer orders and physical print/document operations.
+          <strong>Central Design Principle:</strong> The platform serves as a deterministic bridge between digital customer orders and physical document-service operations.
         </p>
         
         <div class="callout-box">
-          <div class="callout-icon">💡</div>
           <div class="callout-body">
-            <strong>Architecture Philosophy:</strong> The Cloud decides <em>WHAT</em> to print, how to route, price, calculate dynamic ETA, and audit. The local shop <strong>Print Station</strong> decides <em>HOW</em> to feed jobs silently to OS print queues with zero network lag via aggressive prefetching.
+            <strong>Core Division of Responsibility:</strong> The Cloud platform decides <em>WHAT</em> to print (Validation, Pricing, Dynamic ETA Engine, Multi-Tenant Isolation, and Ledger Auditing). The local shop <strong>Print Station</strong> decides <em>HOW</em> to hand files to physical OS spoolers with zero latency using prefetch caching and heartbeat health checks.
           </div>
         </div>
       </section>
@@ -174,13 +151,21 @@
             <h2>The Entire Platform on One Page</h2>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn" title="View Fullscreen & Zoom">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn" title="Copy Mermaid Definition">📋 Copy</button>
+            <button class="btn-action zoom-btn" title="View Fullscreen & Zoom">Fullscreen</button>
+            <button class="btn-action copy-btn" title="Copy Mermaid Definition">Copy</button>
           </div>
         </div>
-        <p class="card-why">
-          <strong>Read left to right:</strong> Customer & Merchant interfaces → Cloud brain (Auth, Routing, Orders, Payments) → Local Shop Print Station → Physical Printers & Output Verification → Verified Handover.
-        </p>
+        
+        <div class="card-explanation">
+          <div class="explanation-title">Architecture & Workflow Explanation</div>
+          <p><strong>Overview:</strong> This diagram traces the full end-to-end data boundary from human stakeholders to cloud computing and physical hardware execution.</p>
+          <ul class="explanation-points">
+            <li><strong>Left (People & Interfaces):</strong> Customers submit orders via Web/QR or Mobile; shop staff manage queues; platform administrators oversee health and dispute resolution.</li>
+            <li><strong>Middle (Cloud Logic):</strong> The cloud gateway handles authentication, tenant validation, order management, payment webhooks, dynamic routing, and WebSocket event publishing.</li>
+            <li><strong>Right (Local Execution & Physical Reality):</strong> The Web Print Station runs locally on shop PCs, prefetches files via signed URLs, feeds the Windows Spooler, and triggers staff physical verification prior to secure OTP pickup.</li>
+          </ul>
+        </div>
+
         <div class="diagram-viewport">
           <pre class="mermaid">
 flowchart LR
@@ -228,12 +213,11 @@ FUT["FUTURE: marketplace, API partners, delivery, multi-service"] -.-> API
 
       <!-- Roles Guide -->
       <section id="roles-guide" class="role-grid-section">
-        <h3 class="section-heading">Recommended Reading Paths</h3>
+        <h3 class="section-heading">Recommended Reading Paths by Role</h3>
         <div class="role-grid">
           <div class="role-card">
-            <div class="role-icon">💻</div>
-            <h4>New Engineers & Developers</h4>
-            <p>Start with the Master Diagram, then master the foundational lifecycles and station pairing:</p>
+            <h4>Engineers & Developers</h4>
+            <p>Master the state machines, station pairing protocols, backend modules, and local caching:</p>
             <div class="role-links">
               <a href="#d-3">3. Order Lifecycle</a>
               <a href="#d-6">6. Print Station</a>
@@ -243,9 +227,8 @@ FUT["FUTURE: marketplace, API partners, delivery, multi-service"] -.-> API
             </div>
           </div>
           <div class="role-card">
-            <div class="role-icon">📊</div>
             <h4>Product Managers & Founders</h4>
-            <p>Understand user journey, business models, priority pricing, and end-to-end processing:</p>
+            <p>Understand user journey, approval criteria, priority pricing mechanics, and revenue models:</p>
             <div class="role-links">
               <a href="#d-2">2. Customer Journey</a>
               <a href="#d-11">11. Priority Pricing</a>
@@ -254,9 +237,8 @@ FUT["FUTURE: marketplace, API partners, delivery, multi-service"] -.-> API
             </div>
           </div>
           <div class="role-card">
-            <div class="role-icon">🛡️</div>
             <h4>QA, SRE & Operations</h4>
-            <p>Focus on partial failure recovery, reconciliation, physical sorting, and job separation:</p>
+            <p>Review partial print recovery, payment reconciliations, paper separation, and observability:</p>
             <div class="role-links">
               <a href="#d-12">12. Failure Recovery</a>
               <a href="#d-22">22. Job Separation</a>
@@ -285,11 +267,14 @@ FUT["FUTURE: marketplace, API partners, delivery, multi-service"] -.-> API
             <h3>Product Ecosystem</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> Maps who touches the platform and how they connect. Customers never connect directly to shop printers; all interactions flow through the cloud gateway and local station.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Ecosystem Boundaries:</strong> Customers interface strictly through client applications and cloud APIs. They never interact directly with local shop hardware. The cloud maintains business logic, queues, and storage, while shop PC Print Stations communicate downstream with the OS spooler.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 flowchart LR
@@ -339,11 +324,14 @@ PA --> SP --> PR
             <h3>Customer Journey: Walk-in & Remote</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> Both walk-in (QR scan) and remote orders feed into a single unified processing pipeline. Customers only return to the counter once the order is verified and ready.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Unified Ordering Pipeline:</strong> Whether a customer scans a QR code at the shop counter (walk-in) or orders remotely from home, the configuration, preview, pricing, ETA estimation, and payment pipeline remain identical. The customer returns to the counter only upon receiving a verified ready notification.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 flowchart TD
@@ -370,11 +358,14 @@ ATS -.-> OTP
             <h3>Order Lifecycle State Machine</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> Strict separation of Payment, Approval, Print Execution, and Physical Verification. Failures in printing always route to staff physical verification to count salvageable pages before re-queueing.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Separation of Concerns:</strong> Payment, Approval, Print Execution, and Physical Verification are discrete states. If a printer encounters a paper jam or hardware failure (ERROR), the order moves into PHYSICAL_VERIFICATION where staff count what was printed before retrying or re-routing.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 stateDiagram-v2
@@ -411,11 +402,14 @@ COLLECTED --> [*]
             <h3>Payment Flow with Idempotent Webhooks</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> Payment gateways retry callbacks under latency. Using strict idempotency keys guarantees no double charging or duplicated print orders occur.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Idempotency & Reconciliation:</strong> Payment gateway webhooks frequently retry. Each payment event contains an idempotency key to prevent double charging and duplicate order creation. A background reconciliation cron job detects any unpaid drops or orphan settlements.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 sequenceDiagram
@@ -448,11 +442,14 @@ Note over API,DB: A reconciliation job compares gateway records with the DB and 
             <h3>Order Approval Flow</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> A paid order is not immediately sent to printers. Configurable rules (e.g. high value, color, bulk volume) trigger manual staff review to prevent wasted consumables.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Consumable Protection:</strong> A paid order is not automatically routed if it matches shop threshold rules (e.g. bulk page counts, color jobs, or high order value). These enter manual approval where staff can review before ink and paper are consumed.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 flowchart TD
@@ -478,11 +475,14 @@ D -.-> AU[("Audit log: who decided")]
             <h3>Print Station Architecture (Cloud vs Local)</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> Clean boundary: Cloud manages queues and signed URLs; the web app running on the shop PC prefetches the next 1-2 files to local cache and spools them silently to the default printer.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Cloud vs Local Boundary:</strong> Cloud decides WHAT to print by maintaining queues and generating short-lived signed URLs. The shop PC runs a lightweight Print Station web client that prefetches the next 1-2 jobs to local storage and prints silently to the Windows spooler.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 flowchart LR
@@ -515,11 +515,14 @@ AG -->|"heartbeat, job status, errors it can see"| ST
             <h3>Print Station Device Pairing</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> Safe one-time pairing code exchanged for a persistent, revocable device token stored securely in the browser's indexed profile.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Secure Device Enrollment:</strong> Shop administrators generate a temporary pairing code in the Merchant Dashboard. Entering this on the shop PC exchanges it for a permanent, revocable device token stored securely in the browser's indexed profile.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 sequenceDiagram
@@ -548,11 +551,14 @@ A->>W: Register the shop printer manually, a browser cannot list printers
             <h3>Printer State Machine</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> System health (heartbeats) and merchant policies combine to determine if a printer is in the routable pool.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Health & Policy Gating:</strong> A printer is only eligible to receive new orders when it is AVAILABLE (healthy heartbeat, no active error, enabled by merchant policy). Mid-job failures pause the machine to prevent duplicate print collisions.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 stateDiagram-v2
@@ -582,11 +588,14 @@ DISABLED --> AVAILABLE
             <h3>Smart Routing Engine</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> Deterministic filtering pipeline matching job requirements (paper, color, duplex) against healthy, policy-enabled resources to produce an optimal assignment and ETA.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Deterministic Assignment:</strong> Filters candidate printers by paper size, color, and duplex requirements, eliminates unhealthy or paused resources, evaluates merchant routing preferences, and assigns the resource yielding the lowest computed ETA.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 flowchart TD
@@ -610,11 +619,14 @@ E --> BEST["Best resource assigned"]
             <h3>ETA Calculation and Dynamic Updates</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> ETA is a core free feature presented as a range (e.g. 7-10 min). Meaningful delays automatically notify customers via push/WebSocket.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Dynamic ETA Engine:</strong> ETA is computed as a realistic range (e.g. 7-10 min) factoring in queue depth, printer speed (PPM), and staff verification buffers. If delays occur mid-queue, meaningful changes automatically push notifications to the customer.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 flowchart LR
@@ -640,11 +652,14 @@ CH -->|"No"| SIL["Update silently"]
             <h3>Priority Service and Mid-Flight Upgrades</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> Priority is only offered if it provides genuine acceleration. Mid-flight upgrades charge only the marginal fee difference.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Fair Monetization:</strong> Priority upgrades are only presented when a faster path is mathematically viable. If a standard order experiences queue congestion later, mid-flight upgrades charge only the incremental priority fee difference.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 flowchart TD
@@ -672,11 +687,14 @@ UP --> SPLIT
             <h3>Physical Verification & Printer Failure Handling</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> Digital completion ≠ Physical completion. Mid-job errors trigger manual staff verification to count actual tray output before re-spooling remaining pages.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Physical Ground Truth:</strong> Spooler submission does not equal successful physical output. Staff must physically verify print quality. On mid-job jams, staff count pages in the tray and choose to resume from page N+1, restart, reassign, or refund.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 flowchart TD
@@ -701,7 +719,7 @@ A3 --> Q
 
 
       <!-- ==========================================
-           BATCHES 2-4: STAKEHOLDERS, APPS, TENANCY (13-30)
+           BATCHES 2-4: SYSTEMS & MONETIZATION (13-30)
            ========================================== -->
       <section id="batch-2-4" class="batch-divider">
         <div class="batch-badge">Batches 2 to 4</div>
@@ -717,11 +735,14 @@ A3 --> Q
             <h3>Stakeholder Map</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> Defines incentives and priorities for Customers, Shop Owners, Floor Staff, Platform Admins, and Partner Institutions.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Stakeholder Incentives:</strong> Maps what each party cares about: Customers (zero waiting, ETA accuracy), Merchant Owners (revenue, hardware control), Staff (clear tasks, attribution), and Golden Admin (platform health, dispute audits).</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 flowchart LR
@@ -743,11 +764,14 @@ PL -.->|"FUTURE"| IN["Institutions and API partners"]
             <h3>Merchant & Staff Workflow</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> Day-to-day shop operational loop ensuring full accountability: approvals, sorting, and OTP pickup validation are audited to staff accounts.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Shop Floor Loop:</strong> Operational loop inside a store: Paid orders are approved if needed, routed to stations, sorted upon completion, and verified with customer OTP at the counter. All staff actions are logged to staff membership accounts for accountability.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 flowchart TD
@@ -774,11 +798,14 @@ PU -.-> L
             <h3>High-Level Backend Architecture</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> Modular NestJS API leveraging Redis BullMQ queues, Postgres persistence, WebSocket gateways, and async background workers.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Modular NestJS Backend:</strong> Central API gateway authenticates requests and dispatches to domain modules (Orders, Payments, Routing, Subscriptions). Redis BullMQ decouples slow tasks (ETA calculation, reconciliation) from synchronous HTTP endpoints.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 flowchart TD
@@ -802,14 +829,17 @@ MOD --> PQ["Print queue"] --> AGT["Print Stations (web)"]
         <div class="card-header">
           <div class="card-title-group">
             <span class="diagram-number">16</span>
-            <h3>Frontend Applications & Monorepo Structure</h3>
+            <h3>Frontend Applications</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> 3 audiences, 6 client apps, shared type validation packages, unified API contract.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Monorepo Code Sharing:</strong> Six client applications (Customer Web/Mobile, Merchant Web/Mobile, Golden Admin, Print Station) share common validation rules, API clients, and TypeScript data types.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 flowchart LR
@@ -837,11 +867,14 @@ APPS --> PKG --> API["Platform API"]
             <h3>Multi-Tenancy Hierarchy</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> Clear separation between Merchant (legal entity) and Shop (physical store branches). Every database row is strictly tenant-scoped.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Merchant vs Shop Boundaries:</strong> A single Merchant business entity can operate multiple physical Shop branches. Every record in PostgreSQL is strictly scoped to its merchant and shop ID to prevent cross-tenant data leaks.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 flowchart TD
@@ -862,14 +895,17 @@ S3 --> R3["Resources, Print Stations, staff, orders"]
         <div class="card-header">
           <div class="card-title-group">
             <span class="diagram-number">18</span>
-            <h3>Authentication & RBAC Matrix</h3>
+            <h3>Authentication and RBAC</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> Distinct identity flows for Customers, Shop Staff, Print Station Devices, and Golden Admins. Every permission check failure produces an immutable audit record.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Identity & Permission Gating:</strong> Separate identity models for Customers, Staff, Paired Hardware Devices, and Admins. Any unauthorized request writes a structured audit log entry.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 flowchart TD
@@ -894,14 +930,17 @@ RB -->|"No"| DN["Deny and write audit log"]
         <div class="card-header">
           <div class="card-title-group">
             <span class="diagram-number">19</span>
-            <h3>Cloud-to-Station Print Queue Protocol</h3>
+            <h3>Print Queue & Station Communication Protocol</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> Lightweight ACK protocol ensures unacknowledged or dropped jobs safely return to the cloud queue for re-assignment without re-uploading.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Two-Phase Job Handshake:</strong> The cloud queue transmits a lightweight job message. Once ACKed, the station prefetches the PDF file directly from storage in background, ensuring zero network idle time during printing.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 sequenceDiagram
@@ -926,14 +965,17 @@ Note over C,S: No ack in time:<br/>job returns to queue<br/>for re-routing
         <div class="card-header">
           <div class="card-title-group">
             <span class="diagram-number">20</span>
-            <h3>Print Station Heartbeat & WakeLock Monitoring</h3>
+            <h3>Print Station Heartbeat</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> Detects if the browser tab goes to sleep or network drops; immediately removes associated hardware from the routing pool.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Liveness & Sleep Detection:</strong> Periodic heartbeat packets convey tab visibility, WakeLock state, and station health. Missing heartbeats immediately trigger OFFLINE status to halt new job routing.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 flowchart LR
@@ -952,14 +994,17 @@ OFF --> AL["Alert merchant and Golden Admin"]
         <div class="card-header">
           <div class="card-title-group">
             <span class="diagram-number">21</span>
-            <h3>Printer Capability & Resource Data Model</h3>
+            <h3>Printer Capability and Resource Model</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> Relational schema ensuring customer UI only presents options that the chosen shop's physical hardware actually supports.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Relational Resource Schema:</strong> Shops own Resources with explicit Capabilities (Color, Paper Sizes, Duplex, PPM speed) and merchant Routing Rules that feed the routing engine.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 classDiagram
@@ -992,14 +1037,17 @@ RoutingRule --> Resource
         <div class="card-header">
           <div class="card-title-group">
             <span class="diagram-number">22</span>
-            <h3>Job Separation: Eco Separator & Staff Ack</h3>
+            <h3>Job Separation: Eco Separator and Acknowledgement</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> Prevents mixed customer papers in the output tray without altering customer PDFs.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Paper Collision Prevention:</strong> To prevent multiple customer print jobs from mixing in the output tray, shops configure either printed separator sheets or manual staff acknowledgement before subsequent jobs start.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 flowchart TD
@@ -1017,14 +1065,17 @@ SEP --> JB
         <div class="card-header">
           <div class="card-title-group">
             <span class="diagram-number">23</span>
-            <h3>Real-Time Notifications & WebSocket Gateway</h3>
+            <h3>Notifications and Real-Time Updates</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> Domain event bus dispatches real-time order progression to active browser WebSockets and fallback Push notifications.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Multi-Channel Push:</strong> Core platform domain events are broadcast to active WebSocket client rooms for live UI progress, with fallback Push/SMS alerts when apps are closed.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 flowchart LR
@@ -1043,14 +1094,17 @@ WSK --> UI["Customer status screen"]
         <div class="card-header">
           <div class="card-title-group">
             <span class="diagram-number">24</span>
-            <h3>Document Security & Auto-Purge Lifecycle</h3>
+            <h3>Document Security and Lifecycle</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> Strict privacy lifecycle: customer documents are encrypted in object storage and automatically purged after collection/retention window.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Privacy & Auto-Purge:</strong> Customer documents are stored encrypted, accessible only via time-bounded signed URLs during active jobs, and automatically purged after collection or retention expiry.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 stateDiagram-v2
@@ -1071,14 +1125,17 @@ DELETED --> [*]
         <div class="card-header">
           <div class="card-title-group">
             <span class="diagram-number">25</span>
-            <h3>Audit Logging & Secure OTP Pickup</h3>
+            <h3>Audit Logging and Secure Pickup</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> Prevents unauthorized collection; exceptions (e.g. lost phone/code) follow an audited alternate verification workflow.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Pickup Authentication:</strong> Customers present an OTP or QR code to staff at the counter. Exceptions (e.g. dead phone battery) follow an audited alternate identity check before handover.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 flowchart TD
@@ -1098,14 +1155,17 @@ ALT --> AUD
         <div class="card-header">
           <div class="card-title-group">
             <span class="diagram-number">26</span>
-            <h3>Subscription, Monetization & Priority Fee Splits</h3>
+            <h3>Subscription, Monetization and Priority Fee Flow</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> Two revenue engines: SaaS merchant subscriptions and dynamic priority service fees without paywalling core features like standard ETA.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Dual Revenue Model:</strong> Platform monetizes via recurring Merchant SaaS subscriptions and customer Priority delivery fee splits, while base print prices flow 100% to the merchant.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 flowchart LR
@@ -1126,14 +1186,17 @@ API["API and institutional fees: FUTURE"] -.-> PL
         <div class="card-header">
           <div class="card-title-group">
             <span class="diagram-number">27</span>
-            <h3>Analytics, Financial Aggregation & Staff Activity</h3>
+            <h3>Analytics, Financial Dashboard and Staff Activity</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> Multi-dimensional metrics separating shop revenue, printer hardware utilization, and staff operational activity.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Three-Dimensional Reporting:</strong> Background aggregation workers separate business analytics across Shop Financials, Hardware Utilization (page throughput, jams), and Staff Productivity.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 flowchart TD
@@ -1154,14 +1217,17 @@ AGG --> GD["Golden Admin analytics"]
         <div class="card-header">
           <div class="card-title-group">
             <span class="diagram-number">28</span>
-            <h3>Golden Admin Operations Overview</h3>
+            <h3>Golden Admin Operations</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> Platform-wide oversight: health monitoring, payout reconciliation, and dispute support without altering shop catalog pricing.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Platform Supervision:</strong> Golden Admin tools provide health alerts, payment reconciliation, and audit log analysis without directly altering merchant catalog pricing or local jobs.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 flowchart LR
@@ -1183,11 +1249,14 @@ GA --> AU["Admin and audit log"]
             <h3>Multi-Service Orders (Future Roadmap)</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> Extensible order model supporting compound services: B&W pages + Color Cover + Lamination + Spiral Binding.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Compound Task Graph:</strong> Extends orders beyond standard printing into decomposed sub-tasks: B&W inner pages, color covers, lamination, and spiral binding stations.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 flowchart TD
@@ -1207,11 +1276,14 @@ O --> I4["OrderItem: binding"] --> T4["Binding task"] --> R4["Binding station"]
             <h3>Marketplace, APIs & Delivery Network (Future)</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> Phase 2 expansion into multi-shop discovery, university ERP integrations, and courier delivery dispatching.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Ecosystem Expansion:</strong> Enables multi-shop marketplace comparisons, university student portal single-sign-on (SSO), and third-party courier delivery dispatch.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 flowchart LR
@@ -1238,14 +1310,17 @@ CORE --> SHOPS["Shops and resources"]
         <div class="card-header">
           <div class="card-title-group">
             <span class="diagram-number">31</span>
-            <h3>Automated Payment Reconciliation</h3>
+            <h3>Payment Reconciliation</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> Scheduled job cross-checks gateway settlements against database orders to recover dropouts and refund ghost charges.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Ledger Integrity:</strong> Periodic cron job reconciles gateway transaction logs against platform orders, automatically resolving pending dropouts and flagging anomalies for review.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 flowchart TD
@@ -1269,14 +1344,17 @@ INV --> AL["Alert Golden Admin"]
         <div class="card-header">
           <div class="card-title-group">
             <span class="diagram-number">32</span>
-            <h3>Routing Decision Logic Tree</h3>
+            <h3>Routing Decision Tree</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> Deterministic, transparent rule evaluation tree ensuring predictable hardware selection and lowest customer wait time.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Deterministic Rule Tree:</strong> Evaluates color capability, paper size match, device health, and specific merchant override rules before selecting the lowest-ETA candidate.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 flowchart TD
@@ -1302,14 +1380,17 @@ L --> A
         <div class="card-header">
           <div class="card-title-group">
             <span class="diagram-number">33</span>
-            <h3>Print Station to OS Print Spooler Execution</h3>
+            <h3>Print Station to OS Print Queue to Printer</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> Documents how silent browser printing interfaces with the Windows Print Spooler and deletes local cached copies immediately after handoff.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Spooler Integration:</strong> The web station triggers silent background spooling to the Windows default printer. Cached local files are securely unlinked immediately after submission.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 sequenceDiagram
@@ -1333,14 +1414,17 @@ A->>F: Delete cached file
         <div class="card-header">
           <div class="card-title-group">
             <span class="diagram-number">34</span>
-            <h3>Partial Print Recovery & Tray Counting</h3>
+            <h3>Partial Print Recovery and Reassignment</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> Never blindly reprint an entire 100-page job on a mid-way paper jam; staff count physical pages and resume from page N+1.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>No Blind Reprints:</strong> If a jam occurs mid-way through a large document, staff count the physical pages printed and re-spool only the remaining pages (from N+1).</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 flowchart TD
@@ -1368,14 +1452,17 @@ R4 -.-> AU
         <div class="card-header">
           <div class="card-title-group">
             <span class="diagram-number">35</span>
-            <h3>Customer App Architecture (Web & Mobile)</h3>
+            <h3>Customer Application Architecture</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> Frictionless Web-first flow for QR scans with optional Expo mobile app for push notifications and repeat order history.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Frictionless Client Architecture:</strong> Customers access instant web apps via QR scans without requiring app installs, with optional Expo mobile app support for push notifications.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 flowchart LR
@@ -1406,11 +1493,14 @@ F6 --> API
             <h3>Merchant Application Architecture</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> Unified dashboard for live queue monitoring, hardware provisioning, pricing configuration, and staff management.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Merchant Operations Hub:</strong> Consolidates live queue management, resource provisioning, catalog pricing, staff assignments, and settlements behind strict role permissions.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 flowchart TD
@@ -1439,11 +1529,14 @@ SET --> API
             <h3>Golden Admin Architecture</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> Read-heavy analytical architecture connected to read-replicas for system-wide health and dispute resolution.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Read-Heavy Oversight:</strong> Powered by read-replica databases and aggregated analytical stores to handle platform-wide monitoring and audit trails with zero performance impact on shop checkouts.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 flowchart TD
@@ -1470,14 +1563,17 @@ API --> AUD[("Audit log for every sensitive action")]
         <div class="card-header">
           <div class="card-title-group">
             <span class="diagram-number">38</span>
-            <h3>Platform Observability & Alerting Pipeline</h3>
+            <h3>Observability</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> Centralized metrics and log aggregation catching heartbeat drops, queue spikes, and payment discrepancies before users notice.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Telemetry & Alerting:</strong> Aggregates API logs, Print Station heartbeats, queue wait times, and payment reconciliation drops into unified dashboards and on-call alerts.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 flowchart LR
@@ -1508,14 +1604,17 @@ ALR -->|"No"| DASH
         <div class="card-header">
           <div class="card-title-group">
             <span class="diagram-number">39</span>
-            <h3>System Context Diagram</h3>
+            <h3>System Context</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> High-level C4 boundary diagram positioning Printli between payment gateways, SMS/push providers, storage, and shop stations.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>System Boundaries:</strong> High-level context depicting Printli between external entities: Payment Gateways, Notification Providers, Object Stores, Shop PCs, and Public API consumers.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 flowchart LR
@@ -1539,11 +1638,14 @@ EX["External apps via API: FUTURE"] -.-> P
             <h3>End-to-End Business Process</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> Complete chronological trace from file upload to physical handover, highlighting which actor performs each action.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Complete Chronological Flow:</strong> Step-by-step trace from customer document upload and price/ETA estimation to cloud verification, shop routing, physical verification, OTP pickup, and ledger updates.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 flowchart TD
@@ -1566,14 +1668,17 @@ J --> K["Platform: COLLECTED, update revenue and analytics"]
         <div class="card-header">
           <div class="card-title-group">
             <span class="diagram-number">41</span>
-            <h3>Order Creation Sequence Flow</h3>
+            <h3>Order Creation Flow</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> Validates document configurations against shop capabilities prior to initiating payment.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Pre-Payment Capability Check:</strong> Options selected by the customer are validated against physical shop capabilities before initiating payment, preventing unsupported jobs.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 sequenceDiagram
@@ -1597,14 +1702,17 @@ API->>DB: PAYMENT_PENDING
         <div class="card-header">
           <div class="card-title-group">
             <span class="diagram-number">42</span>
-            <h3>Document Upload & Storage Architecture</h3>
+            <h3>Document Upload and Storage</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> Direct-to-storage presigned uploads with strict MIME/page validation. The original document is never mutated.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Immutable Storage:</strong> Uploaded customer files are stored untouched in encrypted object storage. Metadata such as page counts and dimensions are stored in PostgreSQL for pricing and ETA estimation.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 flowchart TD
@@ -1622,14 +1730,17 @@ MT --> PRV["Page count feeds price and ETA"]
         <div class="card-header">
           <div class="card-title-group">
             <span class="diagram-number">43</span>
-            <h3>Pickup Lifecycle State Machine</h3>
+            <h3>Pickup Lifecycle</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> Governs physical package custody, customer arrival flags, OTP validation, and uncollected paper recycling policies.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Physical Handover States:</strong> Tracks physical custody of printed documents after print completion, covering OTP verification, lost code protocols, and uncollected paper retention policies.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 stateDiagram-v2
@@ -1653,14 +1764,17 @@ DISPOSED --> [*]
         <div class="card-header">
           <div class="card-title-group">
             <span class="diagram-number">44</span>
-            <h3>Customer-Facing Status Mapping</h3>
+            <h3>Customer Status Flow</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> Internal state codes are mapped to clear human messages. Customers never see confusing intermediate engineering statuses.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Customer-Friendly UX:</strong> Maps complex backend engineering statuses to clear, transparent user messages so customers understand progress without technical confusion.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 flowchart LR
@@ -1680,14 +1794,17 @@ S7["COLLECTED"] --> M7["Done"]
         <div class="card-header">
           <div class="card-title-group">
             <span class="diagram-number">45</span>
-            <h3>WebSocket & Push Fallback Protocol</h3>
+            <h3>WebSocket and Push Flow</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> Seamlessly transitions between live browser WebSocket rooms when the customer has the app open and push notifications when closed.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Hybrid State Synchronization:</strong> Connected web sessions receive live updates via WebSocket order rooms; disconnected mobile clients receive push notifications with automatic reconnection sync.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 sequenceDiagram
@@ -1714,14 +1831,17 @@ U->>W: Reconnect later, fetch latest state
         <div class="card-header">
           <div class="card-title-group">
             <span class="diagram-number">46</span>
-            <h3>Shop PC Driver & Spooler Communication</h3>
+            <h3>Printer Communication</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> Details the boundary between web browser sandboxes, Windows spoolers, USB/Network drivers, and native agent fallback options.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>OS Spooler & Driver Boundaries:</strong> How web browser silent print triggers standard Windows spooler queues to USB/Network printers, with a native agent as an optional fallback.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 flowchart LR
@@ -1743,14 +1863,17 @@ FB["FALLBACK: native agent sets printer and options per job"] -.-> SP
         <div class="card-header">
           <div class="card-title-group">
             <span class="diagram-number">47</span>
-            <h3>Resource Lifecycle & Maintenance Policies</h3>
+            <h3>Resource Management</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> How shop owners register, configure capability limits, put printers into maintenance, or retire them from the pool.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Hardware Onboarding & Policies:</strong> Shop owners register physical printers, configure speed and paper capabilities, and assign operational policies (ENABLED, MAINTENANCE, DISABLED).</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 flowchart TD
@@ -1769,14 +1892,17 @@ D --> G["Owner can disable or remove at any time"]
         <div class="card-header">
           <div class="card-title-group">
             <span class="diagram-number">48</span>
-            <h3>Granular Document Access Control</h3>
+            <h3>Document Access Control</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> Files are accessible only to the uploading customer and the specific paired station with a time-limited signed URL for approved jobs.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Strict Access Boundaries:</strong> Signed download URLs are granted only to the uploading customer and the specific paired Print Station executing the approved job.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 flowchart TD
@@ -1799,14 +1925,17 @@ DN --> LG
         <div class="card-header">
           <div class="card-title-group">
             <span class="diagram-number">49</span>
-            <h3>Shop Staff Permission Hierarchy</h3>
+            <h3>Staff Permission Model</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> Role boundaries: Owner (financials & staff), Manager (routing & approval), Operator (queue execution), and Cashier (pickup verification).</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Role Separation:</strong> Owner (shop pricing, staff, revenue), Manager (routing & approvals), Operator (print queue & sorting), and Cashier (pickup verification).</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 flowchart TD
@@ -1827,14 +1956,17 @@ CSP --> AU
         <div class="card-header">
           <div class="card-title-group">
             <span class="diagram-number">50</span>
-            <h3>Priority Edge Case: Route Disappearance</h3>
+            <h3>Priority Edge Case: Route Disappears</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> Consumer protection: if high-speed hardware fails mid-queue, the priority surcharge is refunded automatically or customer is offered revised choices.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Consumer Protection Rule:</strong> If high-speed hardware becomes unavailable after a customer paid a priority fee, the platform automatically refunds the priority fee and provides a revised ETA.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 flowchart TD
@@ -1855,14 +1987,17 @@ N --> AU[("Audit and priority refund metric")]
         <div class="card-header">
           <div class="card-title-group">
             <span class="diagram-number">51</span>
-            <h3>Multi-Hardware Resource Orchestration (Future)</h3>
+            <h3>Future: Resource Orchestration</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> Future-proof task scheduler generalized for 3D printers, laminators, CNC cutters, and human assembly steps.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Generalized Task Engine:</strong> Generalizes the routing orchestrator beyond standard 2D printers to handle 3D printers, scanners, laminators, binders, and manual human steps.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 flowchart TD
@@ -1881,14 +2016,17 @@ RE --> R5["Human tasks"]
         <div class="card-header">
           <div class="card-title-group">
             <span class="diagram-number">52</span>
-            <h3>External API & Institutional Gateways (Future)</h3>
+            <h3>Future: External API and Institutional Integration</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> B2B developer API with scoped API keys, rate limiters, webhooks, and institutional billing.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>B2B & Campus Gateways:</strong> Enables university ERPs, corporate print centers, and third-party applications to order prints programmatically with webhooks and institutional billing.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 flowchart LR
@@ -1909,14 +2047,17 @@ INS["Institutional wallet or plan: FUTURE"] -.-> CORE
         <div class="card-header">
           <div class="card-title-group">
             <span class="diagram-number">53</span>
-            <h3>File Delivery, Prefetch & Zero-Wait Printing</h3>
+            <h3>File Delivery and Prefetch (Keeping it Fast)</h3>
           </div>
           <div class="card-actions">
-            <button class="btn-action zoom-btn">🔍 Fullscreen</button>
-            <button class="btn-action copy-btn">📋 Copy</button>
+            <button class="btn-action zoom-btn">Fullscreen</button>
+            <button class="btn-action copy-btn">Copy</button>
           </div>
         </div>
-        <p class="card-why"><strong>Why this matters:</strong> Heavy files never transit queues. The station prefetches the upcoming 1-2 jobs in background while the printer is executing, ensuring 100% duty cycle.</p>
+        <div class="card-explanation">
+          <div class="explanation-title">Explanation & Design Rationale</div>
+          <p><strong>Zero Network Idle Time:</strong> Heavy files never transit backend queues. The station prefetches the next 1-2 jobs directly from storage during earlier prints, maintaining 100% duty cycle.</p>
+        </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
 flowchart TD
@@ -1942,7 +2083,7 @@ OFFL -.-> LC
           <div class="footer-brand">
             <strong>Printli Architecture Portal</strong> — Complete Engineering Specification
           </div>
-          <p class="footer-note">Published with GitHub Pages · Maintained by saigurrala-dev</p>
+          <p class="footer-note">Published via GitHub Pages</p>
         </div>
       </footer>
 
@@ -1959,7 +2100,7 @@ OFFL -.-> LC
           <button id="zoom-in" class="ctrl-btn" title="Zoom In">+</button>
           <button id="zoom-out" class="ctrl-btn" title="Zoom Out">-</button>
           <button id="zoom-reset" class="ctrl-btn" title="Reset">Reset</button>
-          <button id="zoom-close" class="ctrl-btn close-btn" title="Close">✕</button>
+          <button id="zoom-close" class="ctrl-btn close-btn" title="Close">Close</button>
         </div>
       </div>
       <div class="zoom-modal-canvas" id="zoom-canvas">

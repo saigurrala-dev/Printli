@@ -1,83 +1,47 @@
 /* ==========================================================================
-   Printli Architecture Documentation Portal - Interactive Controller
+   Printli Architecture Documentation Portal - Controller
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Theme Management
-  const themeToggleBtn = document.getElementById('theme-toggle');
-  const themeIcon = themeToggleBtn.querySelector('.theme-icon');
-  
-  const getPreferredTheme = () => {
-    const saved = localStorage.getItem('printli-theme');
-    // Default to dark mode as requested
-    return saved ? saved : 'dark';
-  };
-
-  const applyTheme = (theme, reRenderMermaid = false) => {
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('printli-theme', theme);
-    themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
-    
-    if (reRenderMermaid && window.mermaid) {
-      initMermaid(theme);
-    }
-  };
-
-  // Initial Theme
-  const currentTheme = getPreferredTheme();
-  applyTheme(currentTheme, false);
-
-  themeToggleBtn.addEventListener('click', () => {
-    const active = document.documentElement.getAttribute('data-theme') || 'dark';
-    const next = active === 'dark' ? 'light' : 'dark';
-    applyTheme(next, true);
-  });
-
-  // Listen for OS theme changes only if user hasn't set preference
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-    if (!localStorage.getItem('printli-theme')) {
-      applyTheme(e.matches ? 'dark' : 'light', true);
-    }
-  });
+  // Always lock dark mode
+  document.documentElement.setAttribute('data-theme', 'dark');
 
   // ==========================================================================
   // Mermaid Initialization (Clean Natural Scale & No Box Clipping)
   // ==========================================================================
-  function initMermaid(theme = 'dark') {
-    const isDark = theme === 'dark';
-    
+  function initMermaid() {
     mermaid.initialize({
       startOnLoad: true,
       securityLevel: 'loose',
-      theme: isDark ? 'dark' : 'default',
+      theme: 'dark',
       themeVariables: {
         fontFamily: "'Plus Jakarta Sans', system-ui, -apple-system, sans-serif",
         fontSize: '13.5px',
-        primaryColor: isDark ? '#1e293b' : '#eff6ff',
-        primaryTextColor: isDark ? '#f1f5f9' : '#0f172a',
-        primaryBorderColor: isDark ? '#3b82f6' : '#2563eb',
-        lineColor: isDark ? '#60a5fa' : '#3b82f6',
-        secondaryColor: isDark ? '#0f172a' : '#f8fafc',
-        tertiaryColor: isDark ? '#1e293b' : '#f1f5f9',
-        mainBkg: isDark ? '#131c2e' : '#ffffff',
-        nodeBorder: isDark ? '#3b82f6' : '#2563eb',
-        clusterBkg: isDark ? 'rgba(30, 41, 59, 0.45)' : 'rgba(239, 246, 255, 0.55)',
-        clusterBorder: isDark ? '#334155' : '#cbd5e1',
-        titleColor: isDark ? '#f8fafc' : '#0f172a',
-        edgeLabelBackground: isDark ? '#0f172a' : '#ffffff',
-        actorBkg: isDark ? '#1e293b' : '#eff6ff',
-        actorBorder: isDark ? '#3b82f6' : '#2563eb',
-        actorTextColor: isDark ? '#f1f5f9' : '#0f172a',
-        actorLineColor: isDark ? '#475569' : '#94a3b8',
-        signalColor: isDark ? '#60a5fa' : '#2563eb',
-        signalTextColor: isDark ? '#f1f5f9' : '#0f172a',
-        labelBoxBkgColor: isDark ? '#1e293b' : '#eff6ff',
-        labelBoxBorderColor: isDark ? '#3b82f6' : '#93c5fd',
-        labelTextColor: isDark ? '#f1f5f9' : '#0f172a',
-        loopTextColor: isDark ? '#94a3b8' : '#64748b',
-        noteBorderColor: isDark ? '#d97706' : '#b45309',
-        noteBkgColor: isDark ? '#2e1d05' : '#fef3c7',
-        noteTextColor: isDark ? '#fde68a' : '#92400e'
+        primaryColor: '#1e293b',
+        primaryTextColor: '#f1f5f9',
+        primaryBorderColor: '#3b82f6',
+        lineColor: '#60a5fa',
+        secondaryColor: '#0f172a',
+        tertiaryColor: '#1e293b',
+        mainBkg: '#131c2e',
+        nodeBorder: '#3b82f6',
+        clusterBkg: 'rgba(30, 41, 59, 0.45)',
+        clusterBorder: '#334155',
+        titleColor: '#f8fafc',
+        edgeLabelBackground: '#0f172a',
+        actorBkg: '#1e293b',
+        actorBorder: '#3b82f6',
+        actorTextColor: '#f1f5f9',
+        actorLineColor: '#475569',
+        signalColor: '#60a5fa',
+        signalTextColor: '#f1f5f9',
+        labelBoxBkgColor: '#1e293b',
+        labelBoxBorderColor: '#3b82f6',
+        labelTextColor: '#f1f5f9',
+        loopTextColor: '#94a3b8',
+        noteBorderColor: '#d97706',
+        noteBkgColor: '#2e1d05',
+        noteTextColor: '#fde68a'
       },
       flowchart: {
         useMaxWidth: false,
@@ -123,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
       `
     });
 
-    // Re-run mermaid on all diagrams
+    // Run mermaid on all diagrams
     mermaid.run({
       nodes: document.querySelectorAll('.mermaid')
     }).catch(err => {
@@ -131,19 +95,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Initialize Mermaid with current theme
-  initMermaid(currentTheme);
+  // Initialize Mermaid
+  initMermaid();
 
   // ==========================================================================
-  // Diagram Search & Category Filter
+  // Diagram Search
   // ==========================================================================
   const searchInput = document.getElementById('diagram-search');
   const searchCount = document.getElementById('search-count');
-  const filterPills = document.querySelectorAll('.filter-pill');
   const cards = Array.from(document.querySelectorAll('.diagram-card'));
   const batchDividers = document.querySelectorAll('.batch-divider');
-
-  let activeFilter = 'all';
 
   function filterDiagrams() {
     const query = searchInput.value.toLowerCase().trim();
@@ -151,14 +112,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     cards.forEach(card => {
       const title = (card.querySelector('h2, h3')?.textContent || '').toLowerCase();
-      const why = (card.querySelector('.card-why')?.textContent || '').toLowerCase();
+      const explanation = (card.querySelector('.card-explanation')?.textContent || '').toLowerCase();
       const mermaidCode = (card.querySelector('.mermaid')?.textContent || '').toLowerCase();
-      const tags = (card.getAttribute('data-tags') || '').toLowerCase();
 
-      const matchesSearch = !query || title.includes(query) || why.includes(query) || mermaidCode.includes(query);
-      const matchesFilter = activeFilter === 'all' || tags.includes(activeFilter);
+      const matchesSearch = !query || title.includes(query) || explanation.includes(query) || mermaidCode.includes(query);
 
-      if (matchesSearch && matchesFilter) {
+      if (matchesSearch) {
         card.style.display = 'block';
         visibleCount++;
       } else {
@@ -169,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Update search count badge
     searchCount.textContent = `${visibleCount} diagram${visibleCount === 1 ? '' : 's'}`;
 
-    // Hide empty batch dividers if all children are hidden
+    // Hide empty batch dividers if all child cards are hidden
     batchDividers.forEach(divider => {
       let nextElem = divider.nextElementSibling;
       let hasVisibleChild = false;
@@ -186,15 +145,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   searchInput.addEventListener('input', filterDiagrams);
 
-  filterPills.forEach(pill => {
-    pill.addEventListener('click', () => {
-      filterPills.forEach(p => p.classList.remove('active'));
-      pill.classList.add('active');
-      activeFilter = pill.getAttribute('data-filter');
-      filterDiagrams();
-    });
-  });
-
   // ==========================================================================
   // Copy Mermaid Code
   // ==========================================================================
@@ -206,16 +156,15 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   document.querySelectorAll('.copy-btn').forEach(btn => {
-    btn.addEventListener('click', e => {
+    btn.addEventListener('click', () => {
       const card = btn.closest('.diagram-card');
       const mermaidPre = card.querySelector('pre.mermaid');
       if (mermaidPre) {
-        // Find raw source or textContent
         const code = mermaidPre.getAttribute('data-source') || mermaidPre.textContent.trim();
         navigator.clipboard.writeText(code).then(() => {
-          showToast('📋 Mermaid code copied to clipboard!');
+          showToast('Mermaid code copied to clipboard');
         }).catch(() => {
-          showToast('Failed to copy code.');
+          showToast('Failed to copy code');
         });
       }
     });
@@ -247,14 +196,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const svg = card.querySelector('.diagram-viewport svg');
 
       if (!svg) {
-        showToast('Diagram is still rendering...');
+        showToast('Diagram is rendering...');
         return;
       }
 
       zoomTitle.textContent = title;
       zoomTarget.innerHTML = '';
       
-      // Clone SVG
       const clonedSvg = svg.cloneNode(true);
       clonedSvg.style.maxWidth = 'none';
       clonedSvg.style.width = 'auto';
@@ -311,7 +259,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentId = '';
 
     for (const section of sections) {
-      const top = section.offsetTop - 160;
+      const top = section.offsetTop - 120;
       const height = section.offsetHeight;
       if (scrollY >= top && scrollY < top + height) {
         currentId = section.getAttribute('id');
