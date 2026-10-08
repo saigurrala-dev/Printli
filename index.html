@@ -154,14 +154,20 @@
           </div>
         </div>
         
-        <div class="card-explanation">
-          <div class="explanation-title">Architecture & Workflow Explanation</div>
-          <p><strong>Overview:</strong> This diagram traces the full end-to-end data boundary from human stakeholders to cloud computing and physical hardware execution.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">A busy college-town print shop receives 200 daily orders from university students, local businesses, and walk-in counter visitors. The platform coordinates everything: students upload files from dorms or scan counter QR codes, the cloud brain validates payments and schedules queues, while local PCs inside the shop silently feed physical printers and staff verify completed trays before handover.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
           <ul class="explanation-points">
-            <li><strong>Left (People & Interfaces):</strong> Customers submit orders via Web/QR or Mobile; shop staff manage queues; platform administrators oversee health and dispute resolution.</li>
-            <li><strong>Middle (Cloud Logic):</strong> The cloud gateway handles authentication, tenant validation, order management, payment webhooks, dynamic routing, and WebSocket event publishing.</li>
-            <li><strong>Right (Local Execution & Physical Reality):</strong> The Web Print Station runs locally on shop PCs, prefetches files via signed URLs, feeds the Windows Spooler, and triggers staff physical verification prior to secure OTP pickup.</li>
+            <li><strong>Actors:</strong> Customers (Web/Mobile), Merchants/Staff (Counter Dashboards), and Platform Golden Admins.</li>
+            <li><strong>Cloud Decision Engine:</strong> Manages API tenancy, BullMQ queues, dynamic ETA calculations, and document object storage.</li>
+            <li><strong>Local Shop Execution:</strong> Web Print Station running in a dedicated browser window pulls job tokens, prefetches PDFs, and spools to local Windows printers.</li>
+            <li><strong>Physical Verification:</strong> Floor staff inspect output quality and verify customer OTP/QR codes at the pickup counter.</li>
           </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Clean architectural boundary: Cloud manages business logic, authorization, dynamic pricing, and audits; local hardware stations handle physical OS spooler execution without network lag.</p>
         </div>
 
         <div class="diagram-viewport">
@@ -268,9 +274,19 @@ FUT["FUTURE: marketplace, API partners, delivery, multi-service"] -.-> API
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Ecosystem Boundaries:</strong> Customers interface strictly through client applications and cloud APIs. They never interact directly with local shop hardware. The cloud maintains business logic, queues, and storage, while shop PC Print Stations communicate downstream with the OS spooler.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">An engineering student needs a 45-page CAD drawing printed before a 9:00 AM presentation. He scans the shop's QR code on his phone. The customer never interacts with the shop PC, printer USB cables, or local networks; his mobile browser communicates securely with the cloud API, which coordinates with the shop's local Print Station.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Customer Layer:</strong> Web QR landing page or Expo mobile app for upload, configuration, payment, and live status tracking.</li>
+            <li><strong>Platform Gateway:</strong> API layer validates tenant scope, writes to PostgreSQL, and pushes print tasks to Redis/BullMQ.</li>
+            <li><strong>Shop Local Spooler:</strong> Browser-based Print Station receives messages and spools silent print commands to the Windows spooler.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Customers are completely sandboxed from shop hardware. All hardware communication is mediated through authenticated, tenant-isolated cloud queues.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -324,9 +340,19 @@ PA --> SP --> PR
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Unified Ordering Pipeline:</strong> Whether a customer scans a QR code at the shop counter (walk-in) or orders remotely from home, the configuration, preview, pricing, ETA estimation, and payment pipeline remain identical. The customer returns to the counter only upon receiving a verified ready notification.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">Neha orders her bound thesis from her apartment (Remote), while Vikram walks directly up to the print shop counter (Walk-in). Both experience the exact same document configuration, instant price estimation, and UPI payment flow. Neha walks over only when she receives a 'Ready for Pickup' push alert.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Entrypoints:</strong> Walk-in users scan a physical counter QR code; remote users pick the shop from a map/directory.</li>
+            <li><strong>Configuration & Preview:</strong> Real-time page count extraction, capability validation, dynamic price quote, and ETA range preview.</li>
+            <li><strong>Payment & Tracking:</strong> UPI/Card checkout, live WebSocket progress bar, and OTP generation upon physical completion.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Unified omnichannel architecture eliminates duplicate code paths for walk-in counter visitors versus online remote orders.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -357,9 +383,19 @@ ATS -.-> OTP
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Separation of Concerns:</strong> Payment, Approval, Print Execution, and Physical Verification are discrete states. If a printer encounters a paper jam or hardware failure (ERROR), the order moves into PHYSICAL_VERIFICATION where staff count what was printed before retrying or re-routing.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">A 100-page project report is uploaded and paid. It moves from CREATED to PAID, passes approval rules to QUEUED, and starts PRINTING. Midway through page 40, the printer runs out of toner (ERROR). The system moves the order to PHYSICAL_VERIFICATION so staff can count the good pages before resuming or re-routing.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Upstream States:</strong> CREATED → UPLOADED → CONFIGURED → PAYMENT_PENDING → PAID.</li>
+            <li><strong>Processing States:</strong> AWAITING_APPROVAL (if rules trigger) → APPROVED → QUEUED → RESOURCE_ASSIGNED → PRINTING.</li>
+            <li><strong>Failure & Completion:</strong> PRINT_COMPLETED or ERROR → PHYSICAL_VERIFICATION → READY_FOR_PICKUP → COLLECTED.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Digital spooling completion is strictly distinguished from physical verification. System failures never cancel orders blindly—they route through staff verification.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -400,9 +436,19 @@ COLLECTED --> [*]
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Idempotency & Reconciliation:</strong> Payment gateway webhooks frequently retry. Each payment event contains an idempotency key to prevent double charging and duplicate order creation. A background reconciliation cron job detects any unpaid drops or orphan settlements.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">A customer pays ₹80 on UPI during network congestion. The payment gateway triggers the callback webhook 3 times in 4 seconds. The platform checks the database idempotency key: the first callback marks the order PAID and queues the job; subsequent duplicate callbacks return 200 OK without double-spooling.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Initiation:</strong> Customer creates order; API generates an idempotency key and initiates gateway payment session.</li>
+            <li><strong>Webhook Ingestion:</strong> Gateway dispatches success webhook; API checks idempotency key in PostgreSQL.</li>
+            <li><strong>Reconciliation Fallback:</strong> Background worker compares gateway settlement logs with database orders to resolve any dropouts.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Zero duplicate prints and zero ghost charges under flaky mobile networks and aggressive payment gateway retry policies.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -439,9 +485,19 @@ Note over API,DB: A reconciliation job compares gateway records with the DB and 
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Consumable Protection:</strong> A paid order is not automatically routed if it matches shop threshold rules (e.g. bulk page counts, color jobs, or high order value). These enter manual approval where staff can review before ink and paper are consumed.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">A standard ₹10 2-page syllabus prints automatically. However, an order requesting 200 glossy full-color wedding invites (₹4,500) triggers the 'High Value & Bulk Color' threshold. The order pauses in AWAITING_APPROVAL until the shop manager inspects paper stock and confirms alignment.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Trigger Check:</strong> Paid orders are evaluated against shop threshold rules (color, large page count, high value, special paper).</li>
+            <li><strong>Branching:</strong> Standard jobs move directly to APPROVED; high-risk jobs hold in AWAITING_APPROVAL.</li>
+            <li><strong>Staff Action:</strong> Owner/Operator approves to release to queue or rejects with automated instant customer refund.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Prevents catastrophic paper/toner wastage from incorrect customer uploads (e.g. accidental 500-page blank document submissions).</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -471,9 +527,19 @@ D -.-> AU[("Audit log: who decided")]
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Cloud vs Local Boundary:</strong> Cloud decides WHAT to print by maintaining queues and generating short-lived signed URLs. The shop PC runs a lightweight Print Station web client that prefetches the next 1-2 jobs to local storage and prints silently to the Windows spooler.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">The cloud backend handles 300 orders across 15 shops. Instead of sending heavy 40MB PDF files over WebSockets, the cloud sends tiny 1KB JSON job descriptors. The shop PC's browser Print Station uses a short-lived presigned URL to stream the PDF directly into local memory/cache while the previous job is printing.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Cloud Responsibility (What):</strong> Orders, tenancy, routing logic, dynamic ETA estimation, status persistence.</li>
+            <li><strong>Local PC Responsibility (How):</strong> Silent print execution, local prefetch cache (1-2 upcoming jobs), Windows spooler interface.</li>
+            <li><strong>Feedback Loop:</strong> Station transmits regular heartbeats, queue status, and local spool errors back to cloud.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Eliminates network latency between consecutive print jobs. The local printer never waits on file downloads between pages.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -510,9 +576,19 @@ AG -->|"heartbeat, job status, errors it can see"| ST
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Secure Device Enrollment:</strong> Shop administrators generate a temporary pairing code in the Merchant Dashboard. Entering this on the shop PC exchanges it for a permanent, revocable device token stored securely in the browser's indexed profile.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">A shop owner installs a new PC at Counter 2. In the Merchant Web Dashboard, they click 'Add Station', generating a 6-digit one-time code valid for 10 minutes. Opening the Print Station URL on Counter 2 and entering the code exchanges it for a persistent, cryptographically signed device token.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Code Generation:</strong> Merchant Admin requests pairing code from Backend via authenticated dashboard session.</li>
+            <li><strong>Exchange:</strong> Shop PC submits code to Backend; Backend validates, invalidates the code, and issues a revocable Device Credential.</li>
+            <li><strong>Storage:</strong> Token persists in the browser profile (IndexedDB); station immediately begins sending telemetry heartbeats.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Zero manual credential sharing or insecure password entry on floor PCs. Device credentials can be revoked remotely at any moment.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -545,9 +621,19 @@ A->>W: Register the shop printer manually, a browser cannot list printers
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Health & Policy Gating:</strong> A printer is only eligible to receive new orders when it is AVAILABLE (healthy heartbeat, no active error, enabled by merchant policy). Mid-job failures pause the machine to prevent duplicate print collisions.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">Printer 2 is actively printing (BUSY). The paper tray runs out of sheets. Staff report a paper jam (ERROR). The routing engine instantly stops routing new jobs to Printer 2, diverting queue traffic to Printer 1 until staff reload paper and mark Printer 2 back to AVAILABLE.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Operational States:</strong> OFFLINE ↔ AVAILABLE ↔ RESERVED ↔ BUSY ↔ ERROR / PAUSED.</li>
+            <li><strong>Administrative Overrides:</strong> Owners can set policy overrides (MAINTENANCE, DISABLED) at any time.</li>
+            <li><strong>Heartbeat Failover:</strong> If the PC browser tab sleeps or loses connection, the resource automatically transitions to OFFLINE.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Routing engine only dispatches jobs to healthy, policy-enabled hardware, preventing queue pileups on jammed or offline printers.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -581,9 +667,19 @@ DISABLED --> AVAILABLE
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Deterministic Assignment:</strong> Filters candidate printers by paper size, color, and duplex requirements, eliminates unhealthy or paused resources, evaluates merchant routing preferences, and assigns the resource yielding the lowest computed ETA.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">An order requires A3 Double-Sided Color Glossy. The shop has 4 printers. The routing engine checks capability matrices (eliminating B&W and A4-only printers), filters out a machine in MAINTENANCE, and assigns the job to the machine with the shortest estimated wait time.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Capability Filter:</strong> Matches color, paper size, duplex, and media type against registered hardware capabilities.</li>
+            <li><strong>Policy & Health Check:</strong> Filters out disabled, paused, or offline printers.</li>
+            <li><strong>Ranking & Score:</strong> Evaluates active queue length, printer speed (PPM), and priority status to compute ETA and assign.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Deterministic, explainable routing with zero black-box heuristics ensures customers always receive the fastest possible turnaround.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -611,9 +707,19 @@ E --> BEST["Best resource assigned"]
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Dynamic ETA Engine:</strong> ETA is computed as a realistic range (e.g. 7-10 min) factoring in queue depth, printer speed (PPM), and staff verification buffers. If delays occur mid-queue, meaningful changes automatically push notifications to the customer.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">A customer is quoted an 8–10 minute ETA. Suddenly, a 150-page priority job ahead in the queue causes the predicted completion to slip to 22 minutes. Because the change exceeds the 5-minute significance threshold, the system pushes an updated ETA alert to the customer's phone.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Input Metrics:</strong> Page counts ahead, PPM speed, verification buffers, priority tier weighting.</li>
+            <li><strong>ETA Range Output:</strong> Generates realistic time window (e.g. 7–10 minutes) rather than an overly fragile exact second.</li>
+            <li><strong>Event Recalculation:</strong> Jams, reroutes, or queue depth changes trigger recalculations and smart customer notifications.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Dynamic ETA prevents crowded shop counters. Customers receive proactive delay notifications rather than waiting in uncertainty.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -643,9 +749,19 @@ CH -->|"No"| SIL["Update silently"]
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Fair Monetization:</strong> Priority upgrades are only presented when a faster path is mathematically viable. If a standard order experiences queue congestion later, mid-flight upgrades charge only the incremental priority fee difference.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">A student in a rush places a standard order with an ETA of 30 minutes. Five minutes later, the queue backs up. The customer taps 'Upgrade to Priority', pays an incremental fee of ₹25, and their job jumps to the head of the priority-capable printer queue.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Offer Verification:</strong> Priority is only offered if a faster routing path is mathematically achievable.</li>
+            <li><strong>Incremental Upgrade:</strong> Customers who upgrade mid-flight pay only the difference between standard and priority fees.</li>
+            <li><strong>Revenue Allocation:</strong> Priority surcharge is split between merchant revenue and platform fees according to shop agreement.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Transparent monetization: priority is never oversold when it cannot deliver tangible time savings.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -677,9 +793,19 @@ UP --> SPLIT
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Physical Ground Truth:</strong> Spooler submission does not equal successful physical output. Staff must physically verify print quality. On mid-job jams, staff count pages in the tray and choose to resume from page N+1, restart, reassign, or refund.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">A 60-page PDF experiences a paper jam on page 38. The Windows print spooler shows 'Print Complete' because all bytes were sent, but the tray only has 37 physical pages. The operator counts the pages in the tray and clicks 'Resume from Page 38', finishing the job without re-printing pages 1-37.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Completion Check:</strong> Spooler submission triggers PHYSICAL_VERIFICATION state.</li>
+            <li><strong>Staff Inspection:</strong> Staff verify page quality, color saturation, and total count.</li>
+            <li><strong>Resolution Branches:</strong> All Correct (issue OTP), Partial Output (resume remaining pages), Defective (restart), or Jam/Damage (refund).</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Prevents massive consumable wastage by treating physical tray inspection as the authoritative ground truth.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -724,9 +850,20 @@ A3 --> Q
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Stakeholder Incentives:</strong> Maps what each party cares about: Customers (zero waiting, ETA accuracy), Merchant Owners (revenue, hardware control), Staff (clear tasks, attribution), and Golden Admin (platform health, dispute audits).</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">Speedy Prints handles orders from thousands of students, shop staff, and platform administrators. Each group has distinct priorities: students want speed and ETA certainty; shop owners care about revenue and hardware uptime; staff need clear accountability; platform admins need security and audit logs.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Customer:</strong> Frictionless QR upload, transparent pricing, live tracking, secure OTP handover.</li>
+            <li><strong>Merchant Owner:</strong> Hardware control, pricing rules, staff permission management, financial settlement.</li>
+            <li><strong>Staff:</strong> Clear queue tasks, physical sorting workflows, attributed action logging.</li>
+            <li><strong>Golden Admin:</strong> Cross-shop health monitoring, payout reconciliation, support dispute mediation.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Clear alignment of stakeholder incentives ensures smooth platform adoption across customers, operators, and platform management.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -752,9 +889,19 @@ PL -.->|"FUTURE"| IN["Institutions and API partners"]
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Shop Floor Loop:</strong> Operational loop inside a store: Paid orders are approved if needed, routed to stations, sorted upon completion, and verified with customer OTP at the counter. All staff actions are logged to staff membership accounts for accountability.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">Inside a print shop, an operator named Priya handles the morning rush. When an order completes on Printer 1, Priya inspects the tray, marks it physically verified, and places it in pickup slot B-14. When the student arrives with OTP 4920, Priya enters it to complete the handover.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Order Ingestion:</strong> Paid orders evaluate approval rules; approved jobs auto-route to Print Stations.</li>
+            <li><strong>Physical Execution:</strong> Printers output pages; staff inspect, collate, and sort into numbered holding slots.</li>
+            <li><strong>Attribution & Audit:</strong> Approvals, reroutes, and pickup handovers are logged to the specific staff member's account.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Complete operational traceability: every physical action on the shop floor is tied to a specific authenticated staff user.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -785,9 +932,19 @@ PU -.-> L
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Modular NestJS Backend:</strong> Central API gateway authenticates requests and dispatches to domain modules (Orders, Payments, Routing, Subscriptions). Redis BullMQ decouples slow tasks (ETA calculation, reconciliation) from synchronous HTTP endpoints.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">During university finals, peak traffic surges to 1,000 orders per minute. The NestJS API gateway authenticates incoming requests, saves state to PostgreSQL, and offloads heavy ETA calculations, push notifications, and reconciliation cron jobs to Redis BullMQ worker queues.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>API Gateway:</strong> JWT auth, request validation, tenant scoping, and WebSocket gateway.</li>
+            <li><strong>Domain Modules:</strong> Orders, Payments, Documents, Pricing, Resources, Routing, Pickup, Audit.</li>
+            <li><strong>Data Tier:</strong> PostgreSQL for persistent relational data; Redis/BullMQ for asynchronous job queues; S3-compatible Object Storage for files.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Decoupled asynchronous architecture prevents slow external dependencies (payment gateways, PDF rendering) from blocking API response times.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -818,9 +975,18 @@ MOD --> PQ["Print queue"] --> AGT["Print Stations (web)"]
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Monorepo Code Sharing:</strong> Six client applications (Customer Web/Mobile, Merchant Web/Mobile, Golden Admin, Print Station) share common validation rules, API clients, and TypeScript data types.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">A single Git monorepo powers customer web portals, mobile apps, merchant management dashboards, and the browser Print Station. Shared TypeScript packages guarantee that form validations, pricing math, and API payloads stay perfectly in sync across all clients.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Client Apps:</strong> Customer Web (QR-first), Customer Mobile (Expo), Merchant Web/Mobile, Golden Admin, Web Print Station.</li>
+            <li><strong>Shared Packages:</strong> @printli/types (shared interfaces), @printli/validation (Zod schemas), @printli/api-client, @printli/ui.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Shared code guarantees 100% type safety and validation parity between customer apps, merchant dashboards, and cloud backend.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -852,9 +1018,19 @@ APPS --> PKG --> API["Platform API"]
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Merchant vs Shop Boundaries:</strong> A single Merchant business entity can operate multiple physical Shop branches. Every record in PostgreSQL is strictly scoped to its merchant and shop ID to prevent cross-tenant data leaks.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">Metro Stationery operates 3 physical branches: Downtown, North Campus, and Airport. Each branch has its own staff, printers, and queue, but the central owner manages collective subscription billing and revenue reports from a single merchant dashboard.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Platform Level:</strong> Global system hosting multiple independent merchant organizations.</li>
+            <li><strong>Merchant Level:</strong> Legal business entity managing subscriptions, payout accounts, and organization settings.</li>
+            <li><strong>Shop Level:</strong> Physical store locations owning specific hardware resources, staff memberships, and localized print queues.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Strict hierarchical multi-tenancy ensures complete data isolation between competing shops while supporting multi-branch chains.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -882,9 +1058,19 @@ S3 --> R3["Resources, Print Stations, staff, orders"]
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Identity & Permission Gating:</strong> Separate identity models for Customers, Staff, Paired Hardware Devices, and Admins. Any unauthorized request writes a structured audit log entry.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">A staff cashier tries to access the merchant revenue settlement settings. The API intercepts the request, validates the user's StaffMembership role, determines that cashiers lack financial permission, and rejects the request with an audited 403 Forbidden log entry.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Identity Verification:</strong> Differentiates Customer sessions, Staff members, Paired Hardware devices, and Platform Admins.</li>
+            <li><strong>Tenant Scope Check:</strong> Validates that the actor belongs to the specific merchant and shop being accessed.</li>
+            <li><strong>RBAC Evaluation:</strong> Evaluates role permissions against requested action; logs any authorization failure for security review.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Granular role-based access control with comprehensive denial auditing ensures tight operational security on shared shop PCs.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -916,9 +1102,19 @@ RB -->|"No"| DN["Deny and write audit log"]
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Two-Phase Job Handshake:</strong> The cloud queue transmits a lightweight job message. Once ACKed, the station prefetches the PDF file directly from storage in background, ensuring zero network idle time during printing.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">The cloud routing engine assigns Job #402 to Printer 2 on Shop PC A. The cloud sends a lightweight JSON job token. Shop PC A responds with an ACK, downloads the PDF via a short-lived presigned URL, and spools it to the OS queue. If the PC loses power before ACK, the cloud re-assigns the job.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Dispatch:</strong> Cloud queue pushes small job metadata message without heavy PDF payload.</li>
+            <li><strong>Prefetch:</strong> Print Station ACKs message and streams PDF from object storage in background during earlier prints.</li>
+            <li><strong>Spooling & Timeout:</strong> Spools to Windows spooler; unacknowledged jobs return to the cloud queue for re-assignment.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Fault-tolerant messaging protocol guarantees zero lost print jobs even during sudden shop PC crashes or power outages.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -950,9 +1146,19 @@ Note over C,S: No ack in time:<br/>job returns to queue<br/>for re-routing
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Liveness & Sleep Detection:</strong> Periodic heartbeat packets convey tab visibility, WakeLock state, and station health. Missing heartbeats immediately trigger OFFLINE status to halt new job routing.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">A shop operator accidentally minimizes the Print Station browser tab or the PC enters sleep mode. The cloud detects a missed heartbeat within 30 seconds, immediately marks the shop's printers OFFLINE, and reroutes pending jobs to prevent customer delays.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Heartbeat Packet:</strong> Station sends periodic payload containing station ID, tab visibility state, WakeLock status, and active job ID.</li>
+            <li><strong>Health Monitor:</strong> Backend tracks last-seen timestamp in Redis; triggers timeout alert if 2 consecutive heartbeats fail.</li>
+            <li><strong>Failover Action:</strong> Marks resources OFFLINE, holds new job assignments, and sends immediate alert to merchant dashboard.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Proactive health monitoring detects browser background throttling or screen sleep before customer jobs get stranded.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -978,9 +1184,19 @@ OFF --> AL["Alert merchant and Golden Admin"]
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Relational Resource Schema:</strong> Shops own Resources with explicit Capabilities (Color, Paper Sizes, Duplex, PPM speed) and merchant Routing Rules that feed the routing engine.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">A customer wants to print 10 glossy A3 color brochures. When they select Speedy Prints, the customer UI dynamically queries the shop's capability model and enables the A3 Color option only because the shop has an active, capable Konica Minolta press registered.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Shop Entity:</strong> Aggregates physical hardware resources, operating hours, and custom routing rules.</li>
+            <li><strong>Resource Capabilities:</strong> Specific attributes (Color, A3/A4/Legal, Duplex, Cardstock, Speed in PPM).</li>
+            <li><strong>Dynamic Catalog:</strong> Customer UI configuration options adapt in real time to match active shop capabilities.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Relational capability mapping makes it impossible for customers to configure and pay for options a shop cannot physically fulfill.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -1020,9 +1236,19 @@ RoutingRule --> Resource
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Paper Collision Prevention:</strong> To prevent multiple customer print jobs from mixing in the output tray, shops configure either printed separator sheets or manual staff acknowledgement before subsequent jobs start.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">During morning rush, Printer 1 outputs 5 separate customer jobs in rapid succession. To prevent customer papers from getting mixed up in the tray, the station either prints a minimal eco-separator sheet between jobs or requires staff to click 'Continue' between batches.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Trigger:</strong> Job A completes printing on the physical output tray.</li>
+            <li><strong>Policy Evaluation:</strong> Shop policy checks configured separation mode (Eco-Separator Sheet, Manual Acknowledgement, or None).</li>
+            <li><strong>Execution:</strong> Spools single header separator or holds Job B until staff sorts Job A and clicks Continue.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Eliminates mixed document handovers and privacy leaks without altering or injecting header pages into customer PDF files.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -1047,9 +1273,19 @@ SEP --> JB
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Multi-Channel Push:</strong> Core platform domain events are broadcast to active WebSocket client rooms for live UI progress, with fallback Push/SMS alerts when apps are closed.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">An order transitions from 'Printing' to 'Ready for Pickup'. The domain event bus publishes an update: the customer's open browser tab receives the update instantly via WebSocket; if their phone is locked, the Notification Service dispatches a high-priority push notification.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Event Ingestion:</strong> Domain events (Paid, Printing, Delayed, Ready, Collected, Refunded) enter the notification bus.</li>
+            <li><strong>Channel Optimization:</strong> Dispatches to WebSocket room if client is connected; dispatches Push/SMS if disconnected.</li>
+            <li><strong>Deduplication:</strong> Prevents spamming duplicate alerts during rapid state transitions.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Smart multi-channel event routing guarantees customers receive timely progress alerts without redundant message fatigue.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -1075,9 +1311,19 @@ WSK --> UI["Customer status screen"]
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Privacy & Auto-Purge:</strong> Customer documents are stored encrypted, accessible only via time-bounded signed URLs during active jobs, and automatically purged after collection or retention expiry.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">A customer uploads their tax return document. The file is encrypted at rest in object storage. Once the job is printed and collected at the shop counter, an automated lifecycle rule purges the document from storage after 24 hours, ensuring strict personal privacy.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Upload & Storage:</strong> Encrypted direct upload; temporary signed access granted only during active print execution.</li>
+            <li><strong>Retention Window:</strong> Document enters retention countdown once order reaches COLLECTED status.</li>
+            <li><strong>Automated Purge:</strong> S3 lifecycle and database cleanup workers permanently unlink and delete the file.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Strict data privacy by design: temporary storage lifecycle policies prevent customer confidential documents from accumulating on servers.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -1105,9 +1351,19 @@ DELETED --> [*]
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Pickup Authentication:</strong> Customers present an OTP or QR code to staff at the counter. Exceptions (e.g. dead phone battery) follow an audited alternate identity check before handover.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">A student arrives at the shop counter to pick up their printed lab report. They show a 4-digit OTP generated in their app. Staff enter the OTP into the merchant dashboard to verify ownership before handing over the document. Every verification logs staff ID and timestamp.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Code Issuance:</strong> Order reaching READY status generates a cryptographically random 4-digit OTP and QR code.</li>
+            <li><strong>Counter Verification:</strong> Staff scan customer QR or enter OTP; matching code transitions order to COLLECTED.</li>
+            <li><strong>Exception Handling:</strong> Lost phone/dead battery follows an audited override workflow requiring manual staff confirmation.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Secure verification prevents accidental or malicious document pickup at crowded counters while maintaining an immutable audit trail.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -1134,9 +1390,19 @@ ALT --> AUD
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Dual Revenue Model:</strong> Platform monetizes via recurring Merchant SaaS subscriptions and customer Priority delivery fee splits, while base print prices flow 100% to the merchant.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">Speedy Prints subscribes to the Growth SaaS tier (₹1,999/month). When a customer orders standard printing, 100% of the print fee goes to the shop. When a customer adds a ₹20 Priority Delivery surcharge, the platform splits the fee (e.g. ₹15 to merchant, ₹5 to platform).</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Merchant SaaS Subscriptions:</strong> Tiered subscription plans (Starter, Growth, Pro, Enterprise) for software platform access.</li>
+            <li><strong>Customer Base Printing:</strong> 100% of merchant-configured printing and finishing prices flow directly to the shop.</li>
+            <li><strong>Value-Add Surcharges:</strong> Dynamic priority fees and convenience services share revenue between merchant and platform.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Fair, aligned business model: core customer features are never paywalled, and shops retain complete control over their base catalog pricing.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -1164,9 +1430,19 @@ API["API and institutional fees: FUTURE"] -.-> PL
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Three-Dimensional Reporting:</strong> Background aggregation workers separate business analytics across Shop Financials, Hardware Utilization (page throughput, jams), and Staff Productivity.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">A print shop owner reviews their weekly financial dashboard. Background aggregation workers compute net sales, consumable costs, paper jam frequencies per printer, and the number of verifications performed by each staff member during their shift.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Event Ingestion:</strong> Ingests orders, payments, print spool logs, and staff verification timestamps.</li>
+            <li><strong>Aggregation Dimensions:</strong> Shop Financials (revenue, AOV, refunds), Hardware Metrics (utilization, downtime), Staff Activity.</li>
+            <li><strong>Visualization:</strong> Real-time charts in Merchant Dashboard and consolidated oversight in Golden Admin.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Multi-dimensional operational analytics help owners optimize machine maintenance, consumable replenishment, and staff shift scheduling.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -1194,9 +1470,19 @@ AGG --> GD["Golden Admin analytics"]
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Platform Supervision:</strong> Golden Admin tools provide health alerts, payment reconciliation, and audit log analysis without directly altering merchant catalog pricing or local jobs.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">A platform support agent investigates a customer payment inquiry. Through the Golden Admin portal, the agent checks payment gateway logs, station heartbeats, and audit trails across all shops without having permission to alter merchant pricing or start local prints.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Platform Overview:</strong> Global monitoring of active shops, total order throughput, and system health.</li>
+            <li><strong>Support & Audit:</strong> Inspects payment settlement discrepancies, offline station alerts, and dispute tickets.</li>
+            <li><strong>Operational Safety:</strong> Admin tools are read-heavy and audit-logged; admins cannot tamper with local shop print spoolers.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Centralized platform governance and troubleshooting tools ensure high service availability without violating merchant autonomy.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -1222,9 +1508,19 @@ GA --> AU["Admin and audit log"]
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Compound Task Graph:</strong> Extends orders beyond standard printing into decomposed sub-tasks: B&W inner pages, color covers, lamination, and spiral binding stations.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">A customer orders a finished training manual: 80 B&W internal pages, 2 heavy color cover pages, transparent front lamination, and spiral wire binding. The order decomposes into 4 linked tasks dispatched to their respective shop hardware stations in sequence.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Order Decomposition:</strong> Single Order decomposes into multiple OrderItems and dependent Tasks.</li>
+            <li><strong>Hardware Dispatch:</strong> Tasks route to specific resources (B&W High-Speed Printer, Color Printer, Laminator, Binding Station).</li>
+            <li><strong>Collation:</strong> Order enters Physical Verification once all child tasks report completion.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Generalized task graph architecture allows the platform to support complex multi-stage publishing and finishing workflows.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -1248,9 +1544,19 @@ O --> I4["OrderItem: binding"] --> T4["Binding task"] --> R4["Binding station"]
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Ecosystem Expansion:</strong> Enables multi-shop marketplace comparisons, university student portal single-sign-on (SSO), and third-party courier delivery dispatch.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">A university campus portal connects to the Printli API. Students submit course projects directly from their university dashboard. The platform compares campus shops by distance, current queue wait time, and price, routing jobs automatically to the fastest branch.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Discovery Marketplace:</strong> Customers compare shops by real-time queue delay, pricing, and distance.</li>
+            <li><strong>Institutional Integration:</strong> University portals and corporate ERPs submit orders via authenticated partner APIs.</li>
+            <li><strong>Delivery Logistics:</strong> Integrates courier delivery dispatch for completed bulk print runs.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Future roadmap expansion from single-shop operations into an integrated campus/enterprise print network with delivery logistics.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -1284,9 +1590,19 @@ CORE --> SHOPS["Shops and resources"]
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Ledger Integrity:</strong> Periodic cron job reconciles gateway transaction logs against platform orders, automatically resolving pending dropouts and flagging anomalies for review.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">At 2:00 AM, the automated payment reconciliation cron job queries the payment gateway API for all transactions in the last 24 hours. It discovers a ₹120 transaction where the customer's browser closed before order confirmation. The job automatically marks the order PAID and flags it for staff.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Scheduled Ingestion:</strong> Reconciler queries gateway transaction settlement logs and platform database orders.</li>
+            <li><strong>Comparison Logic:</strong> Matches transaction IDs, timestamps, and currency amounts.</li>
+            <li><strong>Auto-Recovery:</strong> Recovers paid-but-pending orders, initiates refunds for duplicate debits, and alerts admin of anomalies.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Automated financial reconciliation guarantees that no customer is charged without receiving their order and ledger discrepancies are resolved automatically.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -1317,9 +1633,19 @@ INV --> AL["Alert Golden Admin"]
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Deterministic Rule Tree:</strong> Evaluates color capability, paper size match, device health, and specific merchant override rules before selecting the lowest-ETA candidate.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">An order arrives requesting Double-Sided Color on A4 paper. The rule tree checks color capability first, eliminates B&W machines, verifies A4 support, checks that remaining machines are healthy and enabled, and routes to the printer with the lowest queue backlog.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Attribute Branching:</strong> Color requirements → Paper size support → System health and policy checks.</li>
+            <li><strong>Merchant Heuristics:</strong> Evaluates custom merchant routing preferences (e.g. prioritize photo printer for glossy stock).</li>
+            <li><strong>Optimal Assignment:</strong> Selects healthy candidate with the lowest estimated queue completion time.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Strict, deterministic decision hierarchy guarantees predictable load distribution and minimizes customer wait times.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -1352,9 +1678,19 @@ L --> A
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Spooler Integration:</strong> The web station triggers silent background spooling to the Windows default printer. Cached local files are securely unlinked immediately after submission.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">Job #108 is prefetched and ready on the shop PC. The Print Station JavaScript client calls the local browser print execution module, feeding data silently to the Windows Spooler. As soon as the spooler reports submission, the local cached PDF file is immediately unlinked from disk.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Checksum Verification:</strong> Prefetched PDF is verified against cloud SHA-256 hash in local cache.</li>
+            <li><strong>Spool Submission:</strong> Dispatches silent print command to OS spooler without popup dialogs.</li>
+            <li><strong>Cleanup:</strong> Local cached file is securely deleted immediately following spool handoff.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Ensures zero residual customer files remain on shop counter PCs while maintaining maximum spooling throughput.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -1385,9 +1721,19 @@ A->>F: Delete cached file
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>No Blind Reprints:</strong> If a jam occurs mid-way through a large document, staff count the physical pages printed and re-spool only the remaining pages (from N+1).</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">A 90-page architectural brief jams on page 45. Rather than wasting 45 good sheets by reprinting the whole file, the operator inspects the tray, enters '44' as the completed count, and clicks 'Resume'. The system generates a print task for pages 45–90 and recalculates customer ETA.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Failure Isolation:</strong> Mid-job hardware jam pauses resource and alerts staff dashboard.</li>
+            <li><strong>Physical Tray Count:</strong> Staff count verified good pages on the output tray.</li>
+            <li><strong>Smart Recovery:</strong> Submits partial task (pages N+1 to End), restarts if ruined, or reassigns remaining pages to another printer.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Eliminates wasteful double-printing on large documents and keeps customers informed of revised completion estimates.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -1422,9 +1768,19 @@ R4 -.-> AU
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Frictionless Client Architecture:</strong> Customers access instant web apps via QR scans without requiring app installs, with optional Expo mobile app support for push notifications.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">A student walks up to a shop QR code. Tapping the camera opens the Customer Web App instantly with zero app install required. For frequent power users, the Expo mobile app provides push notifications and saved payment profiles.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Web App (QR-First):</strong> Instant loading single-page app for upload, configuration, price estimation, and payment.</li>
+            <li><strong>Mobile App (Expo):</strong> Native push notifications, biometric auth, and multi-order history tracking.</li>
+            <li><strong>Real-Time Sync:</strong> Subscribes to live WebSocket channels for instant progress bar updates.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Zero friction: 90% of walk-in customers order instantly in mobile browsers without downloading native apps.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -1459,9 +1815,19 @@ F6 --> API
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Merchant Operations Hub:</strong> Consolidates live queue management, resource provisioning, catalog pricing, staff assignments, and settlements behind strict role permissions.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">On the shop floor, the merchant web app runs on a touch terminal. Operators view incoming queues in real time, swipe to approve large orders, monitor printer toner levels, and scan customer pickup QR codes with a webcam barcode scanner.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Live Operations:</strong> Real-time WebSocket queue, approval triggers, physical verification toggles, and OTP pickup scanner.</li>
+            <li><strong>Resource Management:</strong> Hardware capability configuration, custom routing rules, and station pairing.</li>
+            <li><strong>Financials:</strong> Real-time revenue tallies, daily settlement breakdowns, and staff permission matrices.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Consolidated operational control center designed for fast, high-volume counter operations.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -1494,9 +1860,19 @@ SET --> API
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Read-Heavy Oversight:</strong> Powered by read-replica databases and aggregated analytical stores to handle platform-wide monitoring and audit trails with zero performance impact on shop checkouts.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">Golden Admin operations monitor 500 active shops across 12 cities. Read replicas handle analytical aggregate queries for system uptime, dispute resolution, and payment settlement without placing load on live checkout databases.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Administrative Gate:</strong> MFA authentication and fine-grained administrative role permissions.</li>
+            <li><strong>Read-Replica Architecture:</strong> Analytics queries run against dedicated read replicas to preserve primary DB performance.</li>
+            <li><strong>Platform Management:</strong> Global tenant oversight, hardware health telemetry, support ticketing, and audit logging.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Scalable administrative architecture isolates platform analytics and reporting from live checkout transaction workloads.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -1530,9 +1906,19 @@ API --> AUD[("Audit log for every sensitive action")]
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Telemetry & Alerting:</strong> Aggregates API logs, Print Station heartbeats, queue wait times, and payment reconciliation drops into unified dashboards and on-call alerts.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">At 11:30 AM, an unusually high volume of print errors occurs across 3 shops in Sector 4. The observability pipeline aggregates log metrics, detects that error thresholds have breached normal limits, and automatically pings the on-call engineering team.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Telemetry Ingestion:</strong> API logs, worker queue latency, station heartbeats, and payment settlement discrepancies.</li>
+            <li><strong>Threshold Evaluation:</strong> Evaluates metrics against dynamic error and latency baselines.</li>
+            <li><strong>Alerting:</strong> Automated alerts notify Golden Admins and on-call engineers before shop disruptions escalate.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Proactive automated observability catches hardware, queue, and payment anomalies before shops or customers report issues.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -1570,9 +1956,19 @@ ALR -->|"No"| DASH
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>System Boundaries:</strong> High-level context depicting Printli between external entities: Payment Gateways, Notification Providers, Object Stores, Shop PCs, and Public API consumers.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">The C4 system context diagram illustrates how Printli connects customers, shop staff, and platform admins with external partners: Razorpay/Stripe for payments, AWS/GCP for storage, Twilio/Firebase for notifications, and local shop print stations.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Core Platform:</strong> Multi-tenant API, routing logic, and queue management.</li>
+            <li><strong>External Services:</strong> Payment Gateways (UPI/Cards), Push/SMS Providers, Cloud Object Storage.</li>
+            <li><strong>Shop Edge:</strong> Local PC Print Stations interfacing with physical USB and network printers.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Comprehensive macro view of all system boundaries, protocols, and third-party external integrations.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -1600,9 +1996,19 @@ EX["External apps via API: FUTURE"] -.-> P
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Complete Chronological Flow:</strong> Step-by-step trace from customer document upload and price/ETA estimation to cloud verification, shop routing, physical verification, OTP pickup, and ledger updates.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">Traces an entire customer order from start to finish: customer uploads a 20-page document, pays ₹40 via UPI, cloud assigns Printer A, local station prints pages, staff inspect quality, customer receives OTP notification, shows code at counter, and collects pages.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Customer Phase:</strong> Upload, configure, preview price/ETA, checkout.</li>
+            <li><strong>Cloud Phase:</strong> Verify payment, evaluate approval rules, assign optimal printer queue.</li>
+            <li><strong>Shop & Handover Phase:</strong> Prefetch file, print, physical verification, OTP verification, handover.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">End-to-end holistic view showing the sequential handoff between customer, cloud, local PC, and physical shop staff.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -1632,9 +2038,19 @@ J --> K["Platform: COLLECTED, update revenue and analytics"]
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Pre-Payment Capability Check:</strong> Options selected by the customer are validated against physical shop capabilities before initiating payment, preventing unsupported jobs.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">A customer configures an order for A3 Glossy Color. The API verifies the shop's registered capabilities before creating the payment session. If the shop is out of A3 stock, the API rejects the combination immediately, preventing failed payments.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Idempotent Order Creation:</strong> Client submits order payload with unique idempotency key.</li>
+            <li><strong>Capability Pre-Validation:</strong> Server validates options against shop's registered hardware and inventory.</li>
+            <li><strong>Payment Initialization:</strong> Order enters PAYMENT_PENDING state and returns gateway checkout token.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Pre-payment validation prevents invalid orders from taking customer money for unsupported print configurations.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -1665,9 +2081,19 @@ API->>DB: PAYMENT_PENDING
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Immutable Storage:</strong> Uploaded customer files are stored untouched in encrypted object storage. Metadata such as page counts and dimensions are stored in PostgreSQL for pricing and ETA estimation.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">A customer selects a 50MB PDF. The browser requests a presigned S3 upload URL from the API and streams the file directly to encrypted object storage. The server validates MIME type, extracts exact page counts, and leaves the original file completely untouched.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Direct Upload:</strong> Client streams file directly to cloud storage using presigned, short-lived signed URLs.</li>
+            <li><strong>Server Validation:</strong> Inspects file header, validates page dimensions, generates print-ready PDF copy.</li>
+            <li><strong>Metadata Persistence:</strong> Stores page count, paper dimensions, and SHA-256 checksum in PostgreSQL.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Direct-to-storage upload prevents heavy file payloads from passing through API web servers, maximizing upload speed.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -1692,9 +2118,19 @@ MT --> PRV["Page count feeds price and ETA"]
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Physical Handover States:</strong> Tracks physical custody of printed documents after print completion, covering OTP verification, lost code protocols, and uncollected paper retention policies.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">Once printed and verified, an order enters READY_FOR_PICKUP. The customer arrives, shows their OTP, and collects their document. If a customer fails to pick up their order within 7 days (UNCOLLECTED), the shop follows its documented document shredding/recycling policy.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Ready State:</strong> Physical verification triggers READY_FOR_PICKUP and issues customer OTP/QR.</li>
+            <li><strong>Verification:</strong> Staff verify OTP at counter; matching code moves order to COLLECTED.</li>
+            <li><strong>Retention Expiry:</strong> Uncollected packages exceeding holding windows transition to UNCOLLECTED → DISPOSED.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Clear legal and operational custody states for physical documents after print execution.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -1725,9 +2161,19 @@ DISPOSED --> [*]
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Customer-Friendly UX:</strong> Maps complex backend engineering statuses to clear, transparent user messages so customers understand progress without technical confusion.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">While the backend processes internal states like QUEUED, RESOURCE_ASSIGNED, and PHYSICAL_VERIFICATION, the customer sees clear, friendly status messages: 'Order Received', 'In Queue', 'Printing Now', 'Checking Your Pages', and 'Ready for Pickup'.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Internal State Mapping:</strong> Complex backend states are translated into friendly user messages.</li>
+            <li><strong>Transparency:</strong> Physical verification is communicated as 'Checking your pages' to set proper expectations.</li>
+            <li><strong>Clarity:</strong> Customers never see engineering status codes or internal queue re-assignments.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Human-centered UX prevents customer confusion while maintaining strict engineering granularity under the hood.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -1754,9 +2200,19 @@ S7["COLLECTED"] --> M7["Done"]
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Hybrid State Synchronization:</strong> Connected web sessions receive live updates via WebSocket order rooms; disconnected mobile clients receive push notifications with automatic reconnection sync.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">A customer watches their order progress on their laptop screen. WebSocket rooms deliver real-time progress events. If the customer closes their laptop, the system detects disconnection and routes the next milestone event as a push notification to their phone.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Room Subscription:</strong> Connected client apps subscribe to order-specific WebSocket channels.</li>
+            <li><strong>Live Publishing:</strong> Domain events publish instant updates to active WebSocket connections.</li>
+            <li><strong>Push Fallback:</strong> Disconnected clients receive Push/SMS notifications; reconnecting clients fetch current state.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Hybrid real-time architecture delivers instantaneous live updates when the app is open with guaranteed fallback delivery when closed.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -1790,9 +2246,19 @@ U->>W: Reconnect later, fetch latest state
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>OS Spooler & Driver Boundaries:</strong> How web browser silent print triggers standard Windows spooler queues to USB/Network printers, with a native agent as an optional fallback.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">Explains how the browser Print Station interacts with physical printers. Because standard web browsers cannot enumerate USB ports directly, silent printing routes to the OS default printer, while an optional native agent serves as a fallback for multi-tray switching.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Web Print Station:</strong> Dedicated browser window running in silent print mode targeting OS default printer.</li>
+            <li><strong>OS Spooler:</strong> Windows Print Spooler transmits rasterized print streams to USB/Network printer drivers.</li>
+            <li><strong>Native Agent Fallback:</strong> Optional native background service for advanced tray selection and hardware diagnostics.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Pragmatic zero-install web architecture for 95% of standard shops with native agent fallback for advanced multi-tray presses.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -1821,9 +2287,19 @@ FB["FALLBACK: native agent sets printer and options per job"] -.-> SP
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Hardware Onboarding & Policies:</strong> Shop owners register physical printers, configure speed and paper capabilities, and assign operational policies (ENABLED, MAINTENANCE, DISABLED).</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">A shop owner purchases a new Canon ImageRunner. They register the printer in the merchant portal, set PPM speed and paper capabilities, and set policy to ENABLED. When the machine needs a drum replacement next month, the owner sets policy to MAINTENANCE.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Registration:</strong> Owner enters printer model, links it to a paired Print Station, and defines capability limits.</li>
+            <li><strong>Policy Setting:</strong> Assigns operational mode (ENABLED, MANUAL_ONLY, MAINTENANCE, DISABLED).</li>
+            <li><strong>Routing Integration:</strong> Active healthy resources enter routing pool; maintenance mode halts new job dispatches.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Empowers shop owners with full control over their equipment fleet with zero engineering intervention.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -1849,9 +2325,19 @@ D --> G["Owner can disable or remove at any time"]
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Strict Access Boundaries:</strong> Signed download URLs are granted only to the uploading customer and the specific paired Print Station executing the approved job.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">A student orders a confidential medical certificate. The document access controller ensures only the uploading customer and the specific paired shop PC assigned to print the job can download the file via a 5-minute signed token. Other shops or users are denied access.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Request Evaluation:</strong> Intercepts document read requests and evaluates requesting identity.</li>
+            <li><strong>Signed Token Generation:</strong> Issues short-lived presigned download URLs for active assigned jobs.</li>
+            <li><strong>Access Logging:</strong> Every document download, view, or denied attempt is written to the immutable audit log.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Strict zero-trust access control prevents unauthorized staff or competing merchants from viewing customer documents.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -1881,9 +2367,19 @@ DN --> LG
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Role Separation:</strong> Owner (shop pricing, staff, revenue), Manager (routing & approvals), Operator (print queue & sorting), and Cashier (pickup verification).</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">In a large shop with 6 employees, permissions are partitioned: Cashiers can only verify OTPs and hand over packages; Operators manage queues and printer jams; Managers approve high-value jobs and reassign printers; Owners manage pricing and bank payouts.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Owner:</strong> Full shop configuration, pricing catalog, staff permissions, revenue settlement.</li>
+            <li><strong>Manager:</strong> Job approvals, routing rule overrides, partial print reassignments, daily reports.</li>
+            <li><strong>Operator & Cashier:</strong> Queue execution, physical sorting, counter OTP verification, and customer handover.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Hierarchical role separation protects business finances while empowering floor staff to process orders rapidly.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -1911,9 +2407,19 @@ CSP --> AU
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Consumer Protection Rule:</strong> If high-speed hardware becomes unavailable after a customer paid a priority fee, the platform automatically refunds the priority fee and provides a revised ETA.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">A customer pays ₹30 for priority printing on a high-speed press. Two minutes later, the press suffers a power fault. Because the faster priority path no longer exists, the platform automatically refunds the ₹30 priority fee and notifies the customer with a revised ETA.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Continuous Path Validation:</strong> Platform verifies that priority routing continues to provide meaningful speed savings.</li>
+            <li><strong>Policy Execution:</strong> If faster path vanishes, policy triggers automatic priority fee refund to customer wallet/UPI.</li>
+            <li><strong>Notification & Choice:</strong> Notifies customer with reason and allows them to proceed with standard queue or cancel.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Guarantees consumer protection: the platform never keeps priority fees if technical hardware issues prevent speed acceleration.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -1941,9 +2447,19 @@ N --> AU[("Audit and priority refund metric")]
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Generalized Task Engine:</strong> Generalizes the routing orchestrator beyond standard 2D printers to handle 3D printers, scanners, laminators, binders, and manual human steps.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">Looking ahead, a customer orders an architectural model: 3D printed plastic gears, 2D laser-cut acrylic baseplate, and full-color laminated instruction booklet. The generalized orchestrator schedules each task to its specialized machine.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Generalized Task Graph:</strong> Extends task scheduling beyond printers to scanners, laminators, binders, and 3D fabrication.</li>
+            <li><strong>Resource Orchestrator:</strong> Evaluates multi-hardware capability, health, queue backlog, and human labor steps.</li>
+            <li><strong>Compound Tracking:</strong> Unifies disparate physical fabrication steps into a cohesive customer ETA.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">Future-ready architecture: positions Printli to become a universal document and custom fabrication operating system.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -1969,9 +2485,19 @@ RE --> R5["Human tasks"]
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>B2B & Campus Gateways:</strong> Enables university ERPs, corporate print centers, and third-party applications to order prints programmatically with webhooks and institutional billing.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">A corporate enterprise portal connects to Printli. When an employee prints business cards, the corporate system submits the job via the REST API using an institutional API key, receives status webhooks, and bills the cost to the department's monthly account.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Public API Gateway:</strong> API keys, rate limiters, OAuth2 scoping, and structured JSON endpoints.</li>
+            <li><strong>Webhook Callbacks:</strong> Real-time HTTP webhooks notify external enterprise and campus portals on job milestones.</li>
+            <li><strong>Institutional Billing:</strong> Supports corporate credit accounts, department billing codes, and monthly invoicing.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">B2B developer platform enables seamless integration with universities, enterprise intranets, and third-party logistics apps.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
@@ -1999,9 +2525,20 @@ INS["Institutional wallet or plan: FUTURE"] -.-> CORE
             <button class="btn-action zoom-btn">Fullscreen</button>
           </div>
         </div>
-        <div class="card-explanation">
-          <div class="explanation-title">Explanation & Design Rationale</div>
-          <p><strong>Zero Network Idle Time:</strong> Heavy files never transit backend queues. The station prefetches the next 1-2 jobs directly from storage during earlier prints, maintaining 100% duty cycle.</p>
+                <div class="card-explanation">
+          <div class="explanation-title">Real-World Scenario</div>
+          <p class="scenario-text">A print shop has a queue of 10 consecutive jobs. While Job #1 is physically printing on the paper tray, the Print Station background worker prefetches Jobs #2 and #3. When Job #1 finishes, Job #2 begins printing in 0.1 seconds without waiting for a download.</p>
+          
+          <div class="explanation-title" style="margin-top: 12px;">How It Works (Step-by-Step)</div>
+          <ul class="explanation-points">
+            <li><strong>Direct Cloud Upload:</strong> Customer uploads direct to encrypted S3 object storage; server prepares print-ready PDF.</li>
+            <li><strong>Queue Notification:</strong> Small job token alerts station; station inspects the upcoming 1-2 jobs in queue.</li>
+            <li><strong>Background Prefetch:</strong> Streams upcoming PDF files to local disk cache with SHA-256 verification.</li>
+            <li><strong>Offline Resilience:</strong> If internet drops momentarily, prefetched jobs continue printing without interruption.</li>
+          </ul>
+
+          <div class="explanation-title" style="margin-top: 12px;">Key Architectural Takeaways & Edge Cases</div>
+          <p class="takeaway-text">100% printer duty cycle: aggressive background prefetching ensures physical printers never sit idle waiting on network downloads.</p>
         </div>
         <div class="diagram-viewport">
           <pre class="mermaid">
