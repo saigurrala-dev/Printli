@@ -9,8 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
   
   const getPreferredTheme = () => {
     const saved = localStorage.getItem('printli-theme');
-    if (saved) return saved;
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    // Default to dark mode as requested
+    return saved ? saved : 'dark';
   };
 
   const applyTheme = (theme, reRenderMermaid = false) => {
@@ -28,12 +28,12 @@ document.addEventListener('DOMContentLoaded', () => {
   applyTheme(currentTheme, false);
 
   themeToggleBtn.addEventListener('click', () => {
-    const active = document.documentElement.getAttribute('data-theme') || 'light';
+    const active = document.documentElement.getAttribute('data-theme') || 'dark';
     const next = active === 'dark' ? 'light' : 'dark';
     applyTheme(next, true);
   });
 
-  // Listen for OS theme changes
+  // Listen for OS theme changes only if user hasn't set preference
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
     if (!localStorage.getItem('printli-theme')) {
       applyTheme(e.matches ? 'dark' : 'light', true);
@@ -41,11 +41,9 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ==========================================================================
-  // Mermaid Initialization
+  // Mermaid Initialization (Clean Natural Scale & No Box Clipping)
   // ==========================================================================
-  let mermaidSeq = 0;
-
-  function initMermaid(theme = 'light') {
+  function initMermaid(theme = 'dark') {
     const isDark = theme === 'dark';
     
     mermaid.initialize({
@@ -53,32 +51,76 @@ document.addEventListener('DOMContentLoaded', () => {
       securityLevel: 'loose',
       theme: isDark ? 'dark' : 'default',
       themeVariables: {
-        fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif",
-        fontSize: '14px',
+        fontFamily: "'Plus Jakarta Sans', system-ui, -apple-system, sans-serif",
+        fontSize: '13.5px',
         primaryColor: isDark ? '#1e293b' : '#eff6ff',
-        primaryTextColor: isDark ? '#f8fafc' : '#1e3a8a',
-        primaryBorderColor: isDark ? '#3b82f6' : '#93c5fd',
+        primaryTextColor: isDark ? '#f1f5f9' : '#0f172a',
+        primaryBorderColor: isDark ? '#3b82f6' : '#2563eb',
         lineColor: isDark ? '#60a5fa' : '#3b82f6',
         secondaryColor: isDark ? '#0f172a' : '#f8fafc',
         tertiaryColor: isDark ? '#1e293b' : '#f1f5f9',
-        mainBkg: isDark ? '#111827' : '#ffffff',
+        mainBkg: isDark ? '#131c2e' : '#ffffff',
         nodeBorder: isDark ? '#3b82f6' : '#2563eb',
-        clusterBkg: isDark ? 'rgba(30, 41, 59, 0.5)' : 'rgba(239, 246, 255, 0.6)',
-        clusterBorder: isDark ? '#334155' : '#cbd5e1'
+        clusterBkg: isDark ? 'rgba(30, 41, 59, 0.45)' : 'rgba(239, 246, 255, 0.55)',
+        clusterBorder: isDark ? '#334155' : '#cbd5e1',
+        titleColor: isDark ? '#f8fafc' : '#0f172a',
+        edgeLabelBackground: isDark ? '#0f172a' : '#ffffff',
+        actorBkg: isDark ? '#1e293b' : '#eff6ff',
+        actorBorder: isDark ? '#3b82f6' : '#2563eb',
+        actorTextColor: isDark ? '#f1f5f9' : '#0f172a',
+        actorLineColor: isDark ? '#475569' : '#94a3b8',
+        signalColor: isDark ? '#60a5fa' : '#2563eb',
+        signalTextColor: isDark ? '#f1f5f9' : '#0f172a',
+        labelBoxBkgColor: isDark ? '#1e293b' : '#eff6ff',
+        labelBoxBorderColor: isDark ? '#3b82f6' : '#93c5fd',
+        labelTextColor: isDark ? '#f1f5f9' : '#0f172a',
+        loopTextColor: isDark ? '#94a3b8' : '#64748b',
+        noteBorderColor: isDark ? '#d97706' : '#b45309',
+        noteBkgColor: isDark ? '#2e1d05' : '#fef3c7',
+        noteTextColor: isDark ? '#fde68a' : '#92400e'
       },
       flowchart: {
-        useMaxWidth: true,
+        useMaxWidth: false,
         htmlLabels: true,
         curve: 'basis',
-        nodeSpacing: 45,
-        rankSpacing: 45
+        nodeSpacing: 35,
+        rankSpacing: 35,
+        padding: 16
       },
       sequence: {
-        useMaxWidth: true,
-        actorMargin: 60,
+        useMaxWidth: false,
+        wrap: true,
+        width: 170,
+        actorMargin: 50,
         noteMargin: 12,
         messageMargin: 35
-      }
+      },
+      themeCSS: `
+        .node rect, .node circle, .node polygon, .node path {
+          stroke-width: 1.5px !important;
+          rx: 6px;
+          ry: 6px;
+        }
+        .node foreignObject {
+          overflow: visible !important;
+        }
+        .label foreignObject {
+          overflow: visible !important;
+        }
+        .node .label {
+          line-height: 1.4 !important;
+          padding: 4px 8px !important;
+        }
+        .edgeLabel {
+          padding: 2px 6px !important;
+          border-radius: 4px;
+        }
+        .cluster rect {
+          stroke-width: 1.5px !important;
+          rx: 8px;
+          ry: 8px;
+        }
+      `
     });
 
     // Re-run mermaid on all diagrams

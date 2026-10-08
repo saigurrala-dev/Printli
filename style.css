@@ -160,20 +160,11 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
-.logo-badge {
-  display: block;
-  font-size: 0.7rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--text-muted);
-}
-
 /* Search Box */
 .search-wrapper {
   position: relative;
   flex: 1;
-  max-width: 460px;
+  max-width: 540px;
 }
 
 .search-icon {
@@ -221,29 +212,8 @@ body {
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
   flex-shrink: 0;
-}
-
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.nav-link {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  text-decoration: none;
-  padding: 6px 12px;
-  border-radius: var(--radius-sm);
-  transition: all 0.15s ease;
-}
-
-.nav-link:hover, .nav-link.active {
-  color: var(--brand-primary);
-  background: var(--brand-pill);
 }
 
 .icon-btn {
@@ -264,24 +234,6 @@ body {
   background: var(--bg-subtle);
   border-color: var(--border-strong);
   color: var(--text-primary);
-}
-
-.github-btn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--text-primary);
-  color: var(--text-inverse);
-  padding: 8px 14px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  text-decoration: none;
-  border-radius: var(--radius-md);
-  transition: opacity 0.2s ease;
-}
-
-.github-btn:hover {
-  opacity: 0.9;
 }
 
 /* ==========================================================================
@@ -734,24 +686,32 @@ body {
   padding: 24px 16px;
   overflow-x: auto;
   max-width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 140px;
+  text-align: center;
+  min-height: 120px;
 }
 
 .diagram-viewport pre.mermaid {
-  margin: 0;
-  width: 100%;
-  display: flex;
-  justify-content: center;
+  margin: 0 auto;
+  display: inline-block;
+  text-align: center;
+  max-width: 100%;
 }
 
 .diagram-viewport svg {
+  display: inline-block !important;
+  margin: 0 auto !important;
   max-width: 100% !important;
   height: auto !important;
-  display: block;
-  margin: 0 auto;
+}
+
+/* Ensure no text or box is clipped in diagram nodes */
+.diagram-viewport svg .node foreignObject,
+.diagram-viewport svg .label foreignObject {
+  overflow: visible !important;
+}
+
+.diagram-viewport svg text {
+  font-family: var(--font-sans) !important;
 }
 
 /* ==========================================================================
