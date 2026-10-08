@@ -182,6 +182,21 @@ body {
   color: var(--text-muted);
 }
 
+/* Sidebar Backdrop for Mobile */
+.sidebar-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 140;
+}
+
+.sidebar-backdrop.active {
+  display: block;
+}
+
 /* ==========================================================================
    Layout & Sidebar
    ========================================================================== */
@@ -195,6 +210,7 @@ body {
   gap: 32px;
   flex: 1;
   transition: grid-template-columns 0.2s ease;
+  width: 100%;
 }
 
 .layout-wrapper.sidebar-collapsed {
@@ -640,9 +656,22 @@ body {
   border-radius: 8px;
   padding: 16px;
   overflow-x: auto;
+  overflow-y: hidden;
   max-width: 100%;
   text-align: center;
   min-height: 100px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) var(--bg-surface);
+}
+
+.diagram-viewport::-webkit-scrollbar {
+  height: 6px;
+}
+
+.diagram-viewport::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: var(--radius-full);
 }
 
 .diagram-viewport pre.mermaid {
@@ -655,7 +684,7 @@ body {
 .diagram-viewport svg {
   display: inline-block !important;
   margin: 0 auto !important;
-  max-width: 100% !important;
+  max-width: none !important;
   height: auto !important;
 }
 
@@ -845,35 +874,141 @@ body {
 }
 
 /* ==========================================================================
-   Responsive Breakpoints
+   Responsive Breakpoints & Mobile Optimization
    ========================================================================== */
 
 @media (max-width: 1100px) {
   .layout-wrapper {
     grid-template-columns: 1fr;
+    padding: 16px 12px;
+    gap: 0;
   }
+
+  .layout-wrapper.sidebar-collapsed {
+    grid-template-columns: 1fr;
+  }
+
   .toc-sidebar {
-    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 320px;
+    max-width: 85vw;
+    height: 100vh;
+    background: var(--bg-surface);
+    border-right: 1px solid var(--border-strong);
+    box-shadow: var(--shadow-xl);
+    z-index: 150;
+    padding: 20px 16px;
+    transform: translateX(-100%);
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    display: block !important;
   }
+
+  .toc-sidebar.mobile-open {
+    transform: translateX(0);
+  }
+
+  .toc-sidebar.collapsed {
+    transform: translateX(-100%);
+    display: block !important;
+  }
+
   .search-wrapper {
-    max-width: 320px;
+    max-width: 360px;
   }
 }
 
 @media (max-width: 768px) {
+  html, body {
+    overflow-x: hidden;
+    width: 100%;
+  }
+
   .header-container {
-    padding: 0 16px;
+    padding: 0 12px;
+    gap: 10px;
   }
+
+  .logo-title {
+    font-size: 1.05rem;
+  }
+
   .search-wrapper {
-    max-width: 240px;
+    max-width: none;
+    flex: 1;
   }
+
+  #diagram-search {
+    padding: 7px 60px 7px 32px;
+    font-size: 0.8rem;
+  }
+
+  .search-count {
+    font-size: 0.68rem;
+    padding: 2px 6px;
+    right: 6px;
+  }
+
   .hero-title {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
   }
+
   .hero-section {
-    padding: 24px 18px;
+    padding: 20px 16px;
   }
+
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .card-actions {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+  }
+
   .diagram-card {
-    padding: 16px;
+    padding: 14px 12px;
+    margin: 14px 0;
+    border-radius: 10px;
+  }
+
+  .card-explanation {
+    padding: 12px 14px;
+    font-size: 0.9rem;
+  }
+
+  .diagram-viewport {
+    padding: 12px 8px;
+    border-radius: 6px;
+  }
+
+  .zoom-modal {
+    padding: 0;
+  }
+
+  .zoom-modal-window {
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0;
+    border: none;
+  }
+
+  .site-footer {
+    padding: 24px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-title {
+    display: none;
+  }
+
+  #diagram-search {
+    padding: 7px 55px 7px 30px;
   }
 }

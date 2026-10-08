@@ -7,27 +7,52 @@ document.addEventListener('DOMContentLoaded', () => {
   document.documentElement.setAttribute('data-theme', 'dark');
 
   // ==========================================================================
-  // Sidebar Collapse / Expand Controller
+  // Sidebar Controller (Desktop Collapse + Mobile Drawer)
   // ==========================================================================
   const layoutWrapper = document.getElementById('layout-wrapper');
   const tocSidebar = document.getElementById('toc-sidebar');
   const sidebarCloseBtn = document.getElementById('sidebar-close-btn');
   const sidebarToggleBtn = document.getElementById('sidebar-toggle-btn');
+  const sidebarBackdrop = document.getElementById('sidebar-backdrop');
+
+  function isMobile() {
+    return window.innerWidth <= 1100;
+  }
+
+  function closeMobileSidebar() {
+    tocSidebar.classList.remove('mobile-open');
+    if (sidebarBackdrop) sidebarBackdrop.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  function openMobileSidebar() {
+    tocSidebar.classList.add('mobile-open');
+    if (sidebarBackdrop) sidebarBackdrop.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
 
   function setSidebarState(collapsed) {
-    if (collapsed) {
-      layoutWrapper.classList.add('sidebar-collapsed');
-      tocSidebar.classList.add('collapsed');
-      localStorage.setItem('printli-sidebar-collapsed', 'true');
+    if (isMobile()) {
+      if (collapsed) {
+        closeMobileSidebar();
+      } else {
+        openMobileSidebar();
+      }
     } else {
-      layoutWrapper.classList.remove('sidebar-collapsed');
-      tocSidebar.classList.remove('collapsed');
-      localStorage.setItem('printli-sidebar-collapsed', 'false');
+      if (collapsed) {
+        layoutWrapper.classList.add('sidebar-collapsed');
+        tocSidebar.classList.add('collapsed');
+        localStorage.setItem('printli-sidebar-collapsed', 'true');
+      } else {
+        layoutWrapper.classList.remove('sidebar-collapsed');
+        tocSidebar.classList.remove('collapsed');
+        localStorage.setItem('printli-sidebar-collapsed', 'false');
+      }
     }
   }
 
-  // Restore saved sidebar state if any
-  if (localStorage.getItem('printli-sidebar-collapsed') === 'true') {
+  // Restore saved desktop sidebar state if any
+  if (!isMobile() && localStorage.getItem('printli-sidebar-collapsed') === 'true') {
     setSidebarState(true);
   }
 
@@ -39,11 +64,47 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (sidebarToggleBtn) {
     sidebarToggleBtn.addEventListener('click', () => {
-      const isCurrentlyCollapsed = tocSidebar.classList.contains('collapsed');
-      setSidebarState(!isCurrentlyCollapsed);
+      if (isMobile()) {
+        const isOpen = tocSidebar.classList.contains('mobile-open');
+        setSidebarState(isOpen);
+      } else {
+        const isCurrentlyCollapsed = tocSidebar.classList.contains('collapsed');
+        setSidebarState(!isCurrentlyCollapsed);
+      }
     });
   }
+
+  if (sidebarBackdrop) {
+    sidebarBackdrop.addEventListener('click', () => {
+      closeMobileSidebar();
+    });
+  }
+
+  // Close mobile sidebar upon clicking any TOC link
+  document.querySelectorAll('.toc-list a, .toc-group-title').forEach(link => {
+    link.addEventListener('click', () => {
+      if (isMobile()) {
+        closeMobileSidebar();
+      }
+    });
+  });
+
+  // Handle window resize between mobile and desktop
+  window.addEventListener('resize', () => {
+    if (!isMobile()) {
+      closeMobileSidebar();
+      if (localStorage.getItem('printli-sidebar-collapsed') === 'true') {
+        layoutWrapper.classList.add('sidebar-collapsed');
+        tocSidebar.classList.add('collapsed');
+      } else {
+        layoutWrapper.classList.remove('sidebar-collapsed');
+        tocSidebar.classList.remove('collapsed');
+      }
+    }
+  });
+
   function initMermaid() {
+    const nat = { useMaxWidth: false };
     mermaid.initialize({
       startOnLoad: true,
       securityLevel: 'loose',
@@ -64,6 +125,25 @@ document.addEventListener('DOMContentLoaded', () => {
         noteMargin: 12,
         messageMargin: 35
       },
+      er: nat,
+      state: nat,
+      class: nat,
+      pie: nat,
+      gantt: nat,
+      journey: nat,
+      timeline: nat,
+      gitGraph: nat,
+      mindmap: nat,
+      xyChart: nat,
+      quadrantChart: nat,
+      sankey: nat,
+      c4: nat,
+      requirement: nat,
+      block: nat,
+      packet: nat,
+      kanban: nat,
+      architecture: nat,
+      radar: nat,
       themeVariables: {
         background: '#1f232b',
         mainBkg: '#262b34',
