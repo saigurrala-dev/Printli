@@ -7,8 +7,42 @@ document.addEventListener('DOMContentLoaded', () => {
   document.documentElement.setAttribute('data-theme', 'dark');
 
   // ==========================================================================
-  // Mermaid Initialization (Clean Natural Scale & No Box Clipping)
+  // Sidebar Collapse / Expand Controller
   // ==========================================================================
+  const layoutWrapper = document.getElementById('layout-wrapper');
+  const tocSidebar = document.getElementById('toc-sidebar');
+  const sidebarCloseBtn = document.getElementById('sidebar-close-btn');
+  const sidebarToggleBtn = document.getElementById('sidebar-toggle-btn');
+
+  function setSidebarState(collapsed) {
+    if (collapsed) {
+      layoutWrapper.classList.add('sidebar-collapsed');
+      tocSidebar.classList.add('collapsed');
+      localStorage.setItem('printli-sidebar-collapsed', 'true');
+    } else {
+      layoutWrapper.classList.remove('sidebar-collapsed');
+      tocSidebar.classList.remove('collapsed');
+      localStorage.setItem('printli-sidebar-collapsed', 'false');
+    }
+  }
+
+  // Restore saved sidebar state if any
+  if (localStorage.getItem('printli-sidebar-collapsed') === 'true') {
+    setSidebarState(true);
+  }
+
+  if (sidebarCloseBtn) {
+    sidebarCloseBtn.addEventListener('click', () => {
+      setSidebarState(true);
+    });
+  }
+
+  if (sidebarToggleBtn) {
+    sidebarToggleBtn.addEventListener('click', () => {
+      const isCurrentlyCollapsed = tocSidebar.classList.contains('collapsed');
+      setSidebarState(!isCurrentlyCollapsed);
+    });
+  }
   function initMermaid() {
     mermaid.initialize({
       startOnLoad: true,
