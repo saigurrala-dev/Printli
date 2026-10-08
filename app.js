@@ -180,36 +180,6 @@ document.addEventListener('DOMContentLoaded', () => {
   searchInput.addEventListener('input', filterDiagrams);
 
   // ==========================================================================
-  // Copy Mermaid Code
-  // ==========================================================================
-  const toast = document.getElementById('toast');
-  function showToast(msg) {
-    toast.textContent = msg;
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 2400);
-  }
-
-  document.querySelectorAll('.copy-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const card = btn.closest('.diagram-card');
-      const mermaidPre = card.querySelector('pre.mermaid');
-      if (mermaidPre) {
-        const code = mermaidPre.getAttribute('data-source') || mermaidPre.textContent.trim();
-        navigator.clipboard.writeText(code).then(() => {
-          showToast('Mermaid code copied to clipboard');
-        }).catch(() => {
-          showToast('Failed to copy code');
-        });
-      }
-    });
-  });
-
-  // Store raw mermaid sources before render
-  document.querySelectorAll('pre.mermaid').forEach(pre => {
-    pre.setAttribute('data-source', pre.textContent.trim());
-  });
-
-  // ==========================================================================
   // Zoom & Fullscreen Modal (with Panzoom)
   // ==========================================================================
   const zoomModal = document.getElementById('zoom-modal');

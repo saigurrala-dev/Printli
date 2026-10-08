@@ -791,33 +791,6 @@ body {
 }
 
 /* ==========================================================================
-   Toast Notification
-   ========================================================================== */
-
-.toast {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  background: var(--brand-primary);
-  color: #ffffff;
-  padding: 10px 18px;
-  border-radius: var(--radius-md);
-  font-size: 0.85rem;
-  font-weight: 600;
-  box-shadow: var(--shadow-lg);
-  opacity: 0;
-  transform: translateY(10px);
-  transition: all 0.2s ease;
-  pointer-events: none;
-  z-index: 2000;
-}
-
-.toast.show {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* ==========================================================================
    Footer
    ========================================================================== */
 
