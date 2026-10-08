@@ -47,36 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
     mermaid.initialize({
       startOnLoad: true,
       securityLevel: 'loose',
-      theme: 'dark',
-      themeVariables: {
-        fontFamily: "'Plus Jakarta Sans', system-ui, -apple-system, sans-serif",
-        fontSize: '13.5px',
-        primaryColor: '#1e293b',
-        primaryTextColor: '#f1f5f9',
-        primaryBorderColor: '#3b82f6',
-        lineColor: '#60a5fa',
-        secondaryColor: '#0f172a',
-        tertiaryColor: '#1e293b',
-        mainBkg: '#131c2e',
-        nodeBorder: '#3b82f6',
-        clusterBkg: 'rgba(30, 41, 59, 0.45)',
-        clusterBorder: '#334155',
-        titleColor: '#f8fafc',
-        edgeLabelBackground: '#0f172a',
-        actorBkg: '#1e293b',
-        actorBorder: '#3b82f6',
-        actorTextColor: '#f1f5f9',
-        actorLineColor: '#475569',
-        signalColor: '#60a5fa',
-        signalTextColor: '#f1f5f9',
-        labelBoxBkgColor: '#1e293b',
-        labelBoxBorderColor: '#3b82f6',
-        labelTextColor: '#f1f5f9',
-        loopTextColor: '#94a3b8',
-        noteBorderColor: '#d97706',
-        noteBkgColor: '#2e1d05',
-        noteTextColor: '#fde68a'
-      },
+      theme: 'base',
       flowchart: {
         useMaxWidth: false,
         htmlLabels: true,
@@ -93,30 +64,58 @@ document.addEventListener('DOMContentLoaded', () => {
         noteMargin: 12,
         messageMargin: 35
       },
+      themeVariables: {
+        background: '#1f232b',
+        mainBkg: '#262b34',
+        primaryColor: '#262b34',
+        primaryTextColor: '#f2f3f5',
+        lineColor: '#a8adb8',
+        primaryBorderColor: '#9aa4b8',
+        nodeBorder: '#9aa4b8',
+        clusterBorder: '#9aa4b8',
+        edgeLabelBackground: '#1f232b',
+        clusterBkg: 'rgba(127,127,127,0.07)',
+        titleColor: '#f2f3f5',
+        darkMode: true,
+        rowOdd: '#1f232b',
+        rowEven: 'rgba(127,127,127,0.07)',
+        attributeBackgroundColorOdd: '#1f232b',
+        attributeBackgroundColorEven: 'rgba(127,127,127,0.07)',
+        fontSize: '15px',
+        fontFamily: "'Plus Jakarta Sans', system-ui, -apple-system, sans-serif",
+        actorBkg: '#262b34',
+        actorBorder: '#9aa4b8',
+        actorTextColor: '#f2f3f5',
+        actorLineColor: '#a8adb8',
+        signalColor: '#a8adb8',
+        signalTextColor: '#f2f3f5',
+        labelBoxBkgColor: '#262b34',
+        labelBoxBorderColor: '#9aa4b8',
+        labelTextColor: '#f2f3f5',
+        noteBorderColor: '#9aa4b8',
+        noteBkgColor: '#262b34',
+        noteTextColor: '#f2f3f5'
+      },
       themeCSS: `
-        .node rect, .node circle, .node polygon, .node path {
-          stroke-width: 1.5px !important;
-          rx: 6px;
-          ry: 6px;
-        }
-        .node foreignObject {
-          overflow: visible !important;
-        }
-        .label foreignObject {
-          overflow: visible !important;
+        .node rect, .node circle, .node polygon, .node path, .cluster rect {
+          stroke-width: 2px !important;
+          stroke: #9aa4b8 !important;
         }
         .node .label {
+          color: #f2f3f5 !important;
           line-height: 1.4 !important;
-          padding: 4px 8px !important;
+        }
+        .node foreignObject, .label foreignObject {
+          overflow: visible !important;
         }
         .edgeLabel {
+          background: #1f232b !important;
+          color: #f2f3f5 !important;
           padding: 2px 6px !important;
-          border-radius: 4px;
         }
-        .cluster rect {
-          stroke-width: 1.5px !important;
-          rx: 8px;
-          ry: 8px;
+        .messageText {
+          fill: #f2f3f5 !important;
+          stroke: none !important;
         }
       `
     });
