@@ -39,7 +39,7 @@
       </div>
       <nav class="toc-nav">
         <div class="toc-group">
-          <a href="#master" class="toc-group-title">Master Architecture</a>
+          <a href="#master-platform" class="toc-group-title">Master Architecture</a>
           <ul class="toc-list">
             <li><a href="#master-platform">Platform Overview</a></li>
             <li><a href="#roles-guide">Reading Guide by Role</a></li>
@@ -128,20 +128,11 @@
     <!-- Main Content Area -->
     <main class="main-content">
 
-      <!-- Master Hero Banner -->
-      <section id="master" class="hero-section">
-        <div class="hero-badge">Architecture & System Specification</div>
-        <h1 class="hero-title">Printli System Architecture</h1>
-        <p class="hero-lead">
-          <strong>Central Design Principle:</strong> The platform serves as a deterministic bridge between digital customer orders and physical document-service operations.
-        </p>
-        
-        <div class="callout-box">
-          <div class="callout-body">
-            <strong>Core Division of Responsibility:</strong> The Cloud platform decides <em>WHAT</em> to print (Validation, Pricing, Dynamic ETA Engine, Multi-Tenant Isolation, and Ledger Auditing). The local shop <strong>Print Station</strong> decides <em>HOW</em> to hand files to physical OS spoolers with zero latency using prefetch caching and heartbeat health checks.
-          </div>
-        </div>
-      </section>
+      <!-- Subject to change notice banner -->
+      <div class="notice-banner">
+        <span class="notice-badge">Notice</span>
+        <span class="notice-text">This architecture and system specification is subject to change.</span>
+      </div>
 
       <!-- Section: Master Architecture Diagram -->
       <section id="master-platform" class="diagram-card" data-tags="core arch">

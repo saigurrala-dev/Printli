@@ -217,8 +217,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (panzoomInstance) panzoomInstance.destroy();
         panzoomInstance = Panzoom(zoomTarget, {
           maxScale: 6,
-          minScale: 0.4,
-          contain: 'outside',
+          minScale: 0.3,
           cursor: 'grab'
         });
         zoomCanvas.addEventListener('wheel', panzoomInstance.zoomWithWheel);

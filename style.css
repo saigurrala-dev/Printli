@@ -585,6 +585,35 @@ body {
   font-family: var(--font-sans) !important;
 }
 
+/* Notice Banner */
+.notice-banner {
+  background: rgba(59, 130, 246, 0.08);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  border-radius: var(--radius-md);
+  padding: 12px 18px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.notice-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: var(--brand-primary);
+  color: #ffffff;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+.notice-text {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+}
+
 /* ==========================================================================
    Zoom Modal
    ========================================================================== */
@@ -606,7 +635,7 @@ body {
 .zoom-modal-backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.85);
   backdrop-filter: blur(4px);
 }
 
@@ -631,6 +660,7 @@ body {
   padding: 14px 20px;
   background: var(--bg-surface);
   border-bottom: 1px solid var(--border-subtle);
+  flex-shrink: 0;
 }
 
 .zoom-modal-header h4 {
@@ -652,7 +682,7 @@ body {
   background: var(--bg-subtle);
   border: 1px solid var(--border-subtle);
   color: var(--text-primary);
-  padding: 6px 12px;
+  padding: 6px 14px;
   border-radius: var(--radius-sm);
   cursor: pointer;
   transition: all 0.15s ease;
@@ -670,13 +700,16 @@ body {
 
 .zoom-modal-canvas {
   flex: 1;
-  overflow: hidden;
+  overflow: auto; /* Enable native horizontal and vertical scroll */
   position: relative;
   background: var(--bg-primary);
   cursor: grab;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 24px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) var(--bg-surface);
 }
 
 .zoom-modal-canvas:active {
@@ -687,10 +720,14 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 40px;
+  min-width: 100%;
+  min-height: 100%;
+  margin: auto;
+  padding: 20px;
 }
 
 .zoom-target svg {
+  display: block;
   max-width: none !important;
   height: auto !important;
 }
